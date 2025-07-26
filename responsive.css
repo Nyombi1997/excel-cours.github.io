@@ -1,0 +1,116 @@
+
+/* Styles for mobile devices */
+@media (max-width: 768px) {
+    /* nav */
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        backdrop-filter: blur(8px);
+        height: 60px;
+        z-index: 5;
+    }
+    nav{
+        position: absolute;
+        top: 0;
+        right: 100%;
+        height: 100vh;
+        background: #fff;
+        width: 50%;
+        overflow: auto;
+    }
+    nav.active{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        background: #fff;
+        width: 50%;
+        overflow: auto;
+    }
+    .div_sortie_start_btn_mobile
+    {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        padding-right: 20px;
+    }
+    nav ul {
+        display: block;
+        gap: 0;
+        list-style: none;
+        padding: 20px 10px;
+        position: relative;
+        z-index: 2;
+    }
+    nav ul li{
+        width: 100%;
+        padding: 5px;
+        border-radius: 10px;
+        margin: 20px 0px;
+        border-bottom: 1px solid var(--vert-excel);
+    }
+    nav ul li a {
+        text-decoration: none;
+        color: #1c2b3a;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .start-btn {
+        display: none;
+    }
+    .div_start_btn_mobile
+    {
+        display: inline-block;
+    }
+    .start_btn_mobile
+    {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        background: none;
+        cursor: pointer;
+    }
+    .start_btn_mobile.view
+    {
+        margin-left: 20px;
+        border-radius: 5px;
+    }
+    .start_btn_mobile.view:active
+    {
+        opacity: .5;
+    }
+    /* cours */
+    .corps_cours
+    .container {
+        flex-direction: column;
+    }
+
+    .corps_cours
+    .sidebar {
+        width: 100%;
+        height: 150px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow-x: auto;
+    }
+
+    .corps_cours
+    .chapter {
+        flex: 1 0 50%;
+    }
+    /* login page */
+    .div_login_page
+    {
+        width: 90%;
+    }
+}

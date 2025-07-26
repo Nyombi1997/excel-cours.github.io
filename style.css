@@ -1,0 +1,362 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    --vert-excel : #4caf50;
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f6f9f8;
+    color: #1c2b3a;
+}
+/* nav */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    backdrop-filter: blur(8px);
+    height: 60px;
+    z-index: 5;
+}
+nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+nav ul li a {
+    text-decoration: none;
+    color: #1c2b3a;
+    font-weight: 500;
+}
+.logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #1c2b3a;
+}
+.logo a {
+    text-decoration: none;
+    outline: none;
+    color: #1c2b3a;
+}
+.logo a span {
+    text-decoration: none;
+    outline: none;
+    color: var(--vert-excel);
+}
+.logo span {
+    color: var(--vert-excel);
+}
+.start-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+    color: #000;
+}
+.start_btn_mobile
+{
+    display: none;
+}
+.hero {
+    text-align: center;
+    padding: 5rem 2rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #d6f5e4 10%, #edf8f1 50%, #f6f9f8 100%);
+    border-radius: 50%;
+    z-index: 0;
+}
+.hero h1 {
+    font-size: 2.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+.hero p {
+    margin-top: 1rem;
+    color: #6b7a89;
+    position: relative;
+    z-index: 1;
+}
+.hero a {
+    display: inline-block;
+    outline: none;
+    text-decoration: none;
+    margin-top: 2rem;
+    background: var(--vert-excel);
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+/* cours */
+.corps_cours
+{
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f4f4f4;
+    margin-top: 60px;
+}
+.corps_cours
+.entete_cours {
+    background-color: var(--vert-excel);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+.corps_cours
+.container {
+    margin-top: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.corps_cours
+.sidebar {
+width: 250px;
+background-color: #ffffff;
+border-right: 1px solid #ddd;
+overflow-y: auto;
+}
+
+.corps_cours
+.sidebar h2 {
+font-size: 1rem;
+padding: 1rem;
+border-bottom: 1px solid #ddd;
+}
+
+.corps_cours
+.chapter {
+padding: 0.8rem 1rem;
+border-bottom: 1px solid #eee;
+cursor: pointer;
+}
+.corps_cours
+.chapter.active {
+    background: var(--vert-excel);
+    color: #fff;
+}
+
+.corps_cours
+.chapter:hover {
+    background: var(--vert-excel);
+    color: #fff;
+}
+
+.corps_cours
+.main {
+flex: 1;
+display: flex;
+flex-direction: column;
+padding: 1rem;
+overflow-y: auto;
+}
+
+.corps_cours
+.video-container, 
+.corps_cours
+.div_video {
+    display: block;
+    background-color: black;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 1rem;
+}
+.corps_cours
+.video-container.active
+{
+    height: auto;
+    background-color: #fff;
+    padding: 10px;
+}
+.corps_cours
+.div_video.active {
+    display: none;
+}
+
+.corps_cours
+.tabs {
+display: flex;
+gap: 1rem;
+margin-bottom: 1rem;
+}
+
+.corps_cours
+.tab {
+padding: 0.5rem 1rem;
+background-color: #e0e0e0;
+cursor: pointer;
+border-radius: 5px;
+}
+
+.corps_cours
+.tab.active {
+background-color: var(--vert-excel);
+color: white;
+}
+
+.corps_cours
+.tab-content {
+background-color: white;
+padding: 1rem;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.corps_cours
+.tab-content 
+p{
+    margin: 10px 0px;
+    border: 1px solid var(--vert-excel);
+    padding: 20px;
+}
+.div_lien_telechargement_fichier
+{
+    padding: 10px;
+    margin: 20px 0;
+}
+.lien_telechargement_fichier
+{
+    text-decoration: none;
+    color: #fff;
+    background: var(--vert-excel);
+    padding: 10px;
+    border-radius: 5px;
+}
+.div_form_quiz
+{
+    display: none;
+    padding: 10px;
+}
+.div_form_quiz.active
+{
+    display: block;
+}
+.titre_quiz
+{
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin: 10px 0px;
+}
+.form_quiz
+{
+    border-radius: 20px;
+    border-top: 1px solid var(--vert-excel);
+    border-bottom: 1px solid var(--vert-excel);
+    padding: 30px 10px;
+}
+.details_form
+{
+    margin: 10px 0px;
+    font-size: 16px;
+}
+.details_form button
+{
+    margin-top: 50px;
+    padding: 20px;
+    width: 100px;
+    outline: none;
+    border: none;
+    background: var(--vert-excel);
+    color: #fff;
+    border-radius: 10px;
+}
+
+/* login page */
+.container_login_page
+{
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #d6f5e4 10%, #edf8f1 50%, #f6f9f8 100%);
+}
+.div_login_page
+{
+    max-height: 90%;
+    overflow: auto;
+    width: 50%;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.div_login_page
+.titre
+{
+    width: 100%;
+    color: #000;
+    font-weight: bold;
+    padding: 20px 0px;
+    font-size: 30px;
+    text-align: center;
+    display: inline-block;
+}
+.div_form_login
+{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--vert-excel);
+    margin: 10px 0px;
+    border-radius: 10px;
+    position: relative;
+}
+.div_form_login.button
+{
+    background: var(--vert-excel);
+}
+.input_login
+{
+    padding: 0px;
+    font-size: 16px;
+    border: none;
+    width: 100%;
+    outline: none;
+}
+.button_login
+{
+    outline: none;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Excel Consulting</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+  <link rel="stylesheet" href="fortawesome/fontawesome-free/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.php">Excel <span>Cours</span></a></div>
+    <nav class="" id="mobile_menu">
+      <div class="div_sortie_start_btn_mobile" id="sortie_nav_mobile">
+        <button class="start_btn_mobile view"><i class="fa-solid fa-times"></i></button>
+      </div>
+      <ul>
+        <li><a href="#">Tout sur nous</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contacts</a></li>
+      </ul>
+    </nav>
+    <a href="login.php" class="start-btn">S'inscrire</a>
+    <div class="div_start_btn_mobile">
+      <a href="login.php" class="start_btn_mobile">S'inscrire</a>
+      <button class="start_btn_mobile view" id="voir_menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Technologie, Support, Apprentissage — tout sur une seule plateforme</h1>
+      <p>Nous vous apprenons à manager votre business, Analyser vos revenues, et prendre des décisions avec les outils excel.</p>
+      <a href="cours.php">Commencer le cour</a>
+    </div>
+  </section>
+
+  <!-- script voir menu -->
+  <script>
+    let
+    voir_menu = document.getElementById("voir_menu"),
+    mobile_menu = document.getElementById('mobile_menu'),
+    sortie_nav_mobile = document.getElementById("sortie_nav_mobile")
+    ;
+
+    voir_menu.addEventListener('click',function(){
+      mobile_menu.classList.add("active");
+    })
+    sortie_nav_mobile.addEventListener('click',function(){
+      mobile_menu.classList.remove("active");
+    })
+
+  </script>
+</body>
+</html>
