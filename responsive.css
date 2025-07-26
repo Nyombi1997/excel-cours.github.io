@@ -79,6 +79,9 @@
         border-radius: 20px;
         background: none;
         cursor: pointer;
+        color: #000;
+        outline: none;
+        text-decoration: none;
     }
     .start_btn_mobile.view
     {
@@ -90,6 +93,11 @@
         opacity: .5;
     }
     /* cours */
+.corps_cours
+{
+    height: auto;
+    padding-bottom: 50px;
+}
     .corps_cours
     .container {
         flex-direction: column;

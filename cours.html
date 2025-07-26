@@ -35,79 +35,79 @@
         </div>
 
         <div class="container">
-            <aside class="sidebar">
-            <h2>Chapitres</h2>
-            <div class="chapter js_video active">1. Introduction</div>
-            <div class="chapter js_video">2. Niveau debutant</div>
-            <div class="chapter js_video">3. Niveau intermédiaire</div>
-            <div class="chapter js_video">4. Niveau expert</div>
-            <div class="chapter js_video" data-quiz="ok">5. Quiz Final</div>
-            </aside>
+            <div class="sidebar">
+                <h2>Chapitres</h2>
+                <div class="chapter js_video active">1. Introduction</div>
+                <div class="chapter js_video">2. Niveau debutant</div>
+                <div class="chapter js_video">3. Niveau intermédiaire</div>
+                <div class="chapter js_video">4. Niveau expert</div>
+                <div class="chapter js_video" data-quiz="ok">5. Quiz Final</div>
+            </div>
 
-            <main class="main">
-            <div class="video-container js_vu_quiz">
-                <!-- form quiz -->
-                <div class="div_form_quiz js_vu_quiz">
-                    <div class="titre_quiz">
-                        Quiz
-                    </div>
-                    <div class="form_quiz">
-                        <div class="form">
-                            <div class="details_form">
-                                <input type="radio" name="question" id="question_1">
-                                <label for="question_1">Question 1</label>
-                            </div>
-                            <div class="details_form">
-                                <input type="radio" name="question" id="question_2">
-                                <label for="question_2">Question 2</label>
-                            </div>
-                            <div class="details_form">
-                                <input type="radio" name="question" id="question_3">
-                                <label for="question_3">Question 3</label>
-                            </div>
-                            <div class="details_form">
-                                <input type="radio" name="question" id="question_4">
-                                <label for="question_4">Question 4</label>
-                            </div>
-                            <div class="details_form">
-                                <input type="radio" name="question" id="question_5">
-                                <label for="question_5">Question 5</label>
-                            </div>
-                            <div class="details_form">
-                                <button>Valider</button>
+            <div class="main">
+                <div class="video-container js_vu_quiz">
+                    <!-- form quiz -->
+                    <div class="div_form_quiz js_vu_quiz">
+                        <div class="titre_quiz">
+                            Quiz
+                        </div>
+                        <div class="form_quiz">
+                            <div class="form">
+                                <div class="details_form">
+                                    <input type="radio" name="question" id="question_1">
+                                    <label for="question_1">Question 1</label>
+                                </div>
+                                <div class="details_form">
+                                    <input type="radio" name="question" id="question_2">
+                                    <label for="question_2">Question 2</label>
+                                </div>
+                                <div class="details_form">
+                                    <input type="radio" name="question" id="question_3">
+                                    <label for="question_3">Question 3</label>
+                                </div>
+                                <div class="details_form">
+                                    <input type="radio" name="question" id="question_4">
+                                    <label for="question_4">Question 4</label>
+                                </div>
+                                <div class="details_form">
+                                    <input type="radio" name="question" id="question_5">
+                                    <label for="question_5">Question 5</label>
+                                </div>
+                                <div class="details_form">
+                                    <button>Valider</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Simule une vidéo -->
+                    <div class="div_video js_vu_quiz">
+                        <video width="100%" height="100%" controls id="video">
+                        <source src="video.mp4" type="video/mp4"/>
+                            Votre navigateur ne prend pas en charge les vidéos.
+                        </video>
+                    </div>
                 </div>
-                <!-- Simule une vidéo -->
-                <div class="div_video js_vu_quiz">
-                    <video width="100%" height="100%" controls id="video">
-                    <source src="video.mp4" type="video/mp4"/>
-                        Votre navigateur ne prend pas en charge les vidéos.
-                    </video>
-                </div>
-            </div>
 
-            <div class="tabs">
-                <div class="tab active" onclick="showTab('content')">Cours</div>
-                <div class="tab" onclick="showTab('files')">Fichiers</div>
-            </div>
-
-            <div class="tab-content" id="content">
-                <h3>Contenu du cours</h3>
-                <p>Bienvenue dans ce module. Nous allons apprendre les bases de EXCEL, pour mieux gérer votre budget.</p>
-            </div>
-
-            <div class="tab-content" id="files" style="display:none;">
-                <h3>Fichiers à télécharger</h3>
-                <div class="div_lien_telechargement_fichier">
-                    <a href="cours_excel.zip" download="cours-excel.zip" class="lien_telechargement_fichier">cours-excel.zip</a>
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('content')">Cours</div>
+                    <div class="tab" onclick="showTab('files')">Fichiers</div>
                 </div>
-                <div class="div_lien_telechargement_fichier">
-                    <a href="Classeur1.xlsx" download="exercices-excel.xlsx" class="lien_telechargement_fichier">exercices-excel.xlsx</a>
+
+                <div class="tab-content" id="content">
+                    <h3>Contenu du cours</h3>
+                    <p>Bienvenue dans ce module. Nous allons apprendre les bases de EXCEL, pour mieux gérer votre budget.</p>
+                </div>
+
+                <div class="tab-content" id="files" style="display:none;">
+                    <h3>Fichiers à télécharger</h3>
+                    <div class="div_lien_telechargement_fichier">
+                        <a href="cours_excel.zip" download="cours-excel.zip" class="lien_telechargement_fichier">cours-excel.zip</a>
+                    </div>
+                    <div class="div_lien_telechargement_fichier">
+                        <a href="Classeur1.xlsx" download="exercices-excel.xlsx" class="lien_telechargement_fichier">exercices-excel.xlsx</a>
+                    </div>
                 </div>
             </div>
-            </main>
         </div>
 
         <script>
