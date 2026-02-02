@@ -1,34 +1,15 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Espace Cours - LinkedIn Learning Style</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="responsive.css">
-    <link rel="stylesheet" href="fortawesome/fontawesome-free/css/all.min.css">
-    <style>
-    </style>
-</head>
-<body>
-    <header>
-        <div class="logo"><a href="index.html">Excel <span>Cours</span></a></div>
-        <nav class="" id="mobile_menu">
-        <div class="div_sortie_start_btn_mobile" id="sortie_nav_mobile">
-            <button class="start_btn_mobile view"><i class="fa-solid fa-times"></i></button>
-        </div>
-        <ul>
-            <li><a href="#">Tout sur nous</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Contacts</a></li>
-        </ul>
-        </nav>
-        <a href="login.html" class="start-btn">S'inscrire</a>
-        <div class="div_start_btn_mobile">
-        <a href="login.html" class="start_btn_mobile">S'inscrire</a>
-        <button class="start_btn_mobile view" id="voir_menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-    </header>
+<?php
+    // Démarrer la session uniquement si elle n'est pas déjà active
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    /* si l'utilisateur est connecter */
+    if(!isset($_SESSION['use_cours_excel_987654321']))
+    {
+        header("location: connexion");
+    }
+?>
     <div class="corps_cours">
         <div class="entete_cours">
             <h1>Cours Excel</h1>
@@ -150,22 +131,3 @@
             })
         </script>
     </div>
-
-    <!-- script voir menu -->
-    <script>
-        let
-        voir_menu = document.getElementById("voir_menu"),
-        mobile_menu = document.getElementById('mobile_menu'),
-        sortie_nav_mobile = document.getElementById("sortie_nav_mobile")
-        ;
-
-        voir_menu.addEventListener('click',function(){
-        mobile_menu.classList.add("active");
-        })
-        sortie_nav_mobile.addEventListener('click',function(){
-        mobile_menu.classList.remove("active");
-        })
-
-    </script>
-</body>
-</html>

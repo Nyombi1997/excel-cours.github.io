@@ -93,11 +93,11 @@
         opacity: .5;
     }
     /* cours */
-.corps_cours
-{
-    height: auto;
-    padding-bottom: 50px;
-}
+    .corps_cours
+    {
+        height: auto;
+        padding-bottom: 50px;
+    }
     .corps_cours
     .container {
         flex-direction: column;
@@ -121,4 +121,20 @@
     {
         width: 90%;
     }
+    /* --- Profile Image --- */
+    .container_profile_cours_excel { flex-direction: column; }
+    .container_profile_cours_excel 
+    .sidebar { 
+        width: 100%; 
+        height: auto; 
+        border-right: none; 
+        border-bottom: 1px solid #e0e0e0; 
+        padding: 15px;
+    }
+    .container_profile_cours_excel 
+    .main-content { padding: 20px; }
+    .container_profile_cours_excel 
+    .grid-form { grid-template-columns: 1fr; }
+    .container_profile_cours_excel 
+    .full-width { grid-column: span 1; }
 }
