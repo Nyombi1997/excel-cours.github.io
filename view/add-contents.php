@@ -1,88 +1,57 @@
-
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Admin – Gestion des cours</title>
-<link rel="stylesheet" href="style.css">
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    padding: 30px;
-}
-
-h1 {
-    margin-bottom: 30px;
-}
-
-.bloc {
-    background: #fff;
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 8px;
-}
-
-input, select, button {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-}
-
-button {
-    background: #4f46e5;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-</style>
-</head>
-<body>
-
-<h1>🎓 Gestion des cours</h1>
-
-<section class="bloc">
-<h2>📂 Ajouter une vidéo</h2>
-
-<form action="save_video.php" method="POST" enctype="multipart/form-data">
-    <input type="text" name="titre" placeholder="Titre de la vidéo" required>
-
-    <input type="number" name="chapitre_id" placeholder="ID Chapitre" required>
-
-    <input type="number" name="ordre" placeholder="Ordre d'affichage" required>
-
-    <input type="file" name="video" accept="video/*" required>
-
-    <button>Uploader la vidéo</button>
-</form>
-</section>
-
-<section class="bloc">
-<h2>🧪 Ajouter un quiz</h2>
-
-<form id="quizForm">
-    <input type="number" name="chapitre_id" placeholder="ID Chapitre" required>
-
-    <input type="text" name="question[]" placeholder="Question 1" required>
-
-    <input type="text" name="reponse[0][]" placeholder="Réponse A">
-    <input type="text" name="reponse[0][]" placeholder="Réponse B">
-    <input type="text" name="reponse[0][]" placeholder="Réponse C">
-
-    <select name="bonne[0]">
-        <option value="0">A</option>
-        <option value="1">B</option>
-        <option value="2">C</option>
-    </select>
-
-    <button type="button" onclick="ajouterQuestion()">➕ Ajouter une question</button>
-    <button type="submit">Enregistrer le quiz</button>
-</form>
-</section>
-
-<script src="script.js"></script>
-</body>
-</html>
+<div class="container_ajout_contents">
+    <div class="div_ajout_contents">
+        <button class="ajout_contents" id="add_video">Ajouter une vidéo</button>
+        <button class="ajout_contents active">Ajouter un quiz</button>
+    </div>
+</div>
+<!-- pop up -->
+<div class="container_popup" id="container_popup">
+    <div class="background" id="background"></div>
+    <!-- pop up -->
+    <div class="div_video_contents" id="video_contents">
+        <div class="titre_popup_contents">Ajouter une vidéo</div>
+        <div class="div_form_contents">
+            <label for="">Titre</label>
+            <input type="text" name="" id="titre_video" placeholder="Titre de la video">
+        </div>
+        <div class="div_form_contents">
+            <label for="">Charger une vidéo</label>
+            <input type="file" name="" id="video" accept="video/*">
+        </div>
+        <div class="div_form_contents">
+            <textarea name="" id="description_video" placeholder="Description de la vidéo"></textarea>
+        </div>
+        <div class="div_form_contents">
+            <label for="">Charger un fichier</label>
+            <input type="file" name="" id="fichier_video" accept="*">
+        </div>
+        <div class="div_form_contents">
+            <button type="button" id="enregistrer_video">Enregistrer</button>
+        </div>
+        <div class="div_form_contents null" id="progress">
+        </div>
+    </div>
+    <!-- quiz -->
+    <div class="div_quiz_contents active" id="quiz_contents">
+        <div class="titre_popup_contents">Ajouter un quiz</div>
+        <div class="div_form_contents">
+            <textarea name="" id="" placeholder="Titre de la question"></textarea>
+        </div>
+        <div class="div_form_contents">
+            <button>Ajouter une question</button>
+            <div class="quiz_form">
+                <input type="radio" name="choix" id="">
+                <input type="text" name="" id="" placeholder="Réponse 1">
+            </div>
+            <div class="quiz_form">
+                <input type="radio" name="choix" id="">
+                <input type="text" name="" id="" placeholder="Réponse 2">
+            </div>
+        </div>
+        <div class="div_form_contents">
+            <button type="button">Enregistrer</button>
+        </div>
+    </div>
+</div>
+<!-- cropper -->
+<script src="<?php echo ASSET; ?>js/manage_quiz.js?<?= filemtime(ROOT."asset/js/manage_quiz.js") ?>"></script>

@@ -137,4 +137,9 @@
     .grid-form { grid-template-columns: 1fr; }
     .container_profile_cours_excel 
     .full-width { grid-column: span 1; }
+    /* ajouter */
+    .ajout_contents
+    {
+        cursor: initial;
+    }
 }

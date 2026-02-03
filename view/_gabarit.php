@@ -10,19 +10,19 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><?= $title_page ?></title>
-        <link rel="stylesheet" href="<?= ASSET ?>css/fontawesome/css/all.min.css?<?= filemtime("/asset/css/fontawesome/css/all.min.css") ?>">
-        <link rel="stylesheet" href="<?php echo ASSET; ?>css/sweetalert2.min.css?<?= filemtime("/asset/css/sweetalert2.min.css") ?>">
+        <link rel="stylesheet" href="<?= ASSET ?>css/fontawesome/css/all.min.css?<?= filemtime(ROOT."asset/css/fontawesome/css/all.min.css") ?>">
+        <link rel="stylesheet" href="<?php echo ASSET; ?>css/sweetalert2.min.css?<?= filemtime(ROOT."asset/css/sweetalert2.min.css") ?>">
         <!-- croppe css -->
-        <link rel="stylesheet" href="<?php echo ASSET; ?>css/cropper.min.css?<?= filemtime("/asset/css/cropper.min.css") ?>">
+        <link rel="stylesheet" href="<?php echo ASSET; ?>css/cropper.min.css?<?= filemtime(ROOT."asset/css/cropper.min.css") ?>">
 
-        <link rel="stylesheet" href="<?= ASSET ?>css/style.css?<?= filemtime("/asset/css/style.css") ?>">
-        <link rel="stylesheet" href="<?= ASSET ?>css/responsive.css?<?= filemtime("/asset/css/responsive.css") ?>">
+        <link rel="stylesheet" href="<?= ASSET ?>css/style.css?<?= filemtime(ROOT."asset/css/style.css") ?>">
+        <link rel="stylesheet" href="<?= ASSET ?>css/responsive.css?<?= filemtime(ROOT."asset/css/responsive.css") ?>">
         <!-- sweat alert -->
-        <script src="<?php echo ASSET; ?>js/sweetalert2.all.min.js?<?= filemtime("/asset/js/sweetalert2.all.min.js") ?>"></script>
+        <script src="<?php echo ASSET; ?>js/sweetalert2.all.min.js?<?= filemtime(ROOT."asset/js/sweetalert2.all.min.js") ?>"></script>
         <!-- jquery -->
-        <script src="<?php echo ASSET; ?>js/jquery-2.2.4.min.js?<?= filemtime("/asset/js/jquery-2.2.4.min.js") ?>"></script>
+        <script src="<?php echo ASSET; ?>js/jquery-2.2.4.min.js?<?= filemtime(ROOT."asset/js/jquery-2.2.4.min.js") ?>"></script>
         <!-- cropper -->
-        <script src="<?php echo ASSET; ?>js/cropper.min.js?<?= filemtime("/asset/js/cropper.min.js") ?>"></script>
+        <script src="<?php echo ASSET; ?>js/cropper.min.js?<?= filemtime(ROOT."asset/js/cropper.min.js") ?>"></script>
     </head>
     <body>
     <header>
@@ -40,6 +40,12 @@
                 {
                     echo '
                         <li><a href="/compte">Compte</a></li>';
+                }
+                /* si l'admin est connecter */
+                if(isset($_SESSION['admin_cours_excel_987654321']))
+                {
+                    echo '
+                        <li><a href="/admin">Admin</a></li>';
                 }
             ?>
         </ul>
@@ -90,8 +96,35 @@
             sortie_nav_mobile.addEventListener('click',function(){
             mobile_menu.classList.remove("active");
             })
-
         </script>
 
     </body>
 </html>
+
+<?php
+    /* ajouter position dans cours */
+    $table = "cours";
+    $column = "position";
+
+    $sql = "
+        SELECT COUNT(*) 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE()
+        AND TABLE_NAME = :table
+        AND COLUMN_NAME = :column
+    ";
+
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([
+        ':table'  => $table,
+        ':column' => $column
+    ]);
+
+    $exists = $stmt->fetchColumn();
+    if ($exists == 0) {
+        $bdd->exec("
+            ALTER TABLE cours
+            ADD position INT NOT NULL AFTER id
+        ");
+    }
+?>

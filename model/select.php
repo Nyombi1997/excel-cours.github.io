@@ -214,7 +214,7 @@
         return $stmt->execute();
     }
     /* créer un slug aux s'il y'en a pas */
-    /* function createSlugIfNeeded($bdd, $base) {
+    /*function createSlugIfNeeded($bdd, $base) {
         $request = "SELECT id, nom FROM $base WHERE slug IS NULL OR slug = ''";
         $stmt = $bdd->prepare($request);
         $stmt->execute();
@@ -224,7 +224,7 @@
             $slug = generateSlug($row['nom']);
             update_bdd($bdd, $base, ['slug' => $slug], "id = " . intval($row['id']));
         }
-    } */
+    }*/
 
     /* gestions des filtres */
     function select_articles_filtre($bdd, array $filters = [], $limit = null, $offset = 0, $order = null, $random = false)

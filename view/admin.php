@@ -1,3 +1,16 @@
+<?php
+    // Démarrer la session uniquement si elle n'est pas déjà active
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    /* si l'utilisateur est connecter */
+    if(!isset($_SESSION['admin_cours_excel_987654321']))
+    {
+        header("location: connexion");
+    }
+
+?>
 <!-- container admin -->
 <div class="container_admin">
     <div class="titre_admin">
