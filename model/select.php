@@ -212,19 +212,74 @@
             $stmt->bindValue(":$key", $value);
         }
         return $stmt->execute();
+    }// Fonction pour générer un slug à partir d'une chaîne de caractères
+    function generateSlug($string,$separator = '-')
+    {
+        global $bdd;
+        // Génération du slug de base
+        $slug = strtolower($string);
+        $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
+        $slug = preg_replace('/[^a-z0-9]+/i', $separator, $slug);
+        $slug = preg_replace('/' . preg_quote($separator, '/') . '+/', $separator, $slug);
+        $slug = trim($slug, $separator);
+
+        $baseSlug = $slug;
+        $i = 1;
+
+        // Récupérer toutes les tables qui ont une colonne "slug"
+        $sql = "
+            SELECT TABLE_NAME
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = DATABASE()
+            AND COLUMN_NAME = 'slug'
+        ";
+
+        $tables = $bdd->query($sql)->fetchAll(PDO::FETCH_COLUMN);
+
+        if (empty($tables)) {
+            return $slug; // aucune table avec slug → paix intérieure
+        }
+
+        // Vérifier l’unicité globale
+        do {
+            $exists = false;
+
+            foreach ($tables as $table) {
+                $check = $bdd->prepare("
+                    SELECT 1 
+                    FROM `$table`
+                    WHERE slug = :slug
+                    LIMIT 1
+                ");
+                $check->execute(['slug' => $slug]);
+
+                if ($check->fetch()) {
+                    $exists = true;
+                    break;
+                }
+            }
+
+            if ($exists) {
+                $slug = $baseSlug . $separator . $i;
+                $i++;
+            }
+
+        } while ($exists);
+
+        return $slug;
     }
     /* créer un slug aux s'il y'en a pas */
-    /*function createSlugIfNeeded($bdd, $base) {
-        $request = "SELECT id, nom FROM $base WHERE slug IS NULL OR slug = ''";
+    function createSlugIfNeeded($bdd, $base) {
+        $request = "SELECT id, user_name FROM $base WHERE slug IS NULL OR slug = ''";
         $stmt = $bdd->prepare($request);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         foreach ($results as $row) {
-            $slug = generateSlug($row['nom']);
+            $slug = generateSlug($row['user_name']);
             update_bdd($bdd, $base, ['slug' => $slug], "id = " . intval($row['id']));
         }
-    }*/
+    }
 
     /* gestions des filtres */
     function select_articles_filtre($bdd, array $filters = [], $limit = null, $offset = 0, $order = null, $random = false)
@@ -309,18 +364,13 @@
     /* moteur de recherche */
     function found($q, $limit = null, $offset = 0, $order = null, $random = false)
     {
+        global $bdd;
+        
         $q = trim($q);
 
         if ($q === '' || strlen($q) < 1) {
             return [];
         }
-
-        if (preg_match('/(\d+)/', $q, $matches)) {
-            $q_numeric = $matches[1];
-            $q = $matches[1];
-        }
-
-        global $bdd;
 
         /* ORDER BY */
         $orderBy = "score DESC, label ASC";
@@ -329,10 +379,8 @@
             $orderBy = "RAND()";
         } elseif ($order !== null) {
             $allowedOrders = [
-                'score'      => 'score DESC',
-                'label'      => 'label ASC',
-                'prix_asc'   => 'prix ASC',
-                'prix_desc'  => 'prix DESC'
+                'score' => 'score DESC',
+                'label' => 'label ASC',
             ];
             if (isset($allowedOrders[$order])) {
                 $orderBy = $allowedOrders[$order];
@@ -342,81 +390,28 @@
         /* LIMIT / OFFSET */
         $limitSql = "";
         if ($limit !== null) {
-            $limit = (int) $limit;
-            $offset = (int) $offset;
+            $limit = (int)$limit;
+            $offset = (int)$offset;
             $limitSql = "LIMIT $limit OFFSET $offset";
         }
 
         $sql = "
-            (
-                SELECT id, nom COLLATE utf8mb4_general_ci AS label, prix, description COLLATE utf8mb4_general_ci AS description, slug COLLATE utf8mb4_general_ci AS slug, 'articles' AS source,
-                    (
-                        (CASE WHEN nom LIKE :start THEN 5
-                            WHEN nom LIKE :middle THEN 3
-                            WHEN nom LIKE :any THEN 1 ELSE 0 END)
-                        +
-                        (CASE WHEN prix LIKE :any THEN 1 ELSE 0 END)
-                    ) AS score
-                FROM articles
-                WHERE (nom LIKE :any OR prix LIKE :any OR (:q_numeric IS NOT NULL AND prix <= :q_numeric)) OR description LIKE :any
-            )
-            UNION
-            (
-                SELECT id, nom COLLATE utf8mb4_general_ci AS label, NULL AS prix, description COLLATE utf8mb4_general_ci AS description, slug COLLATE utf8mb4_general_ci AS slug, 'boutiques' AS source,
-                    (
-                        (CASE WHEN nom COLLATE utf8mb4_general_ci LIKE :start THEN 5
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :middle THEN 3
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :any THEN 1 ELSE 0 END)
-                    ) AS score
-                FROM boutiques
-                WHERE nom COLLATE utf8mb4_general_ci LIKE :any OR description LIKE :any
-            )
-            UNION
-            (
-                SELECT id, nom COLLATE utf8mb4_general_ci AS label, NULL AS prix, NULL AS description, slug COLLATE utf8mb4_general_ci AS slug, 'categorie' AS source,
-                    (
-                        (CASE WHEN nom COLLATE utf8mb4_general_ci LIKE :start THEN 5
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :middle THEN 3
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :any THEN 1 ELSE 0 END)
-                    ) AS score
-                FROM categorie
-                WHERE nom COLLATE utf8mb4_general_ci LIKE :any
-            )
-            UNION
-            (
-                SELECT id, nom COLLATE utf8mb4_general_ci AS label, NULL AS prix, NULL AS description, slug COLLATE utf8mb4_general_ci AS slug, 'types' AS source,
-                    (
-                        (CASE WHEN nom COLLATE utf8mb4_general_ci LIKE :start THEN 5
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :middle THEN 3
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :any THEN 1 ELSE 0 END)
-                    ) AS score
-                FROM types
-                WHERE nom COLLATE utf8mb4_general_ci LIKE :any
-            )
-            UNION
-            (
-                SELECT id, nom COLLATE utf8mb4_general_ci AS label, NULL AS prix, commentaire COLLATE utf8mb4_general_ci AS description, slug COLLATE utf8mb4_general_ci AS slug, 'tailles' AS source,
-                    (
-                        (CASE WHEN nom COLLATE utf8mb4_general_ci LIKE :start THEN 5
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :middle THEN 3
-                            WHEN nom COLLATE utf8mb4_general_ci LIKE :any THEN 1 ELSE 0 END)
-                    ) AS score
-                FROM tailles
-                WHERE nom COLLATE utf8mb4_general_ci LIKE :any
-            )
+            SELECT id, user_name COLLATE utf8mb4_general_ci AS label, email COLLATE utf8mb4_general_ci AS email, profile, date_ajout, 
+                    slug COLLATE utf8mb4_general_ci AS slug, 'utilisateur' AS source,
+                (CASE WHEN user_name LIKE :start THEN 5
+                    WHEN user_name LIKE :middle THEN 3
+                    WHEN user_name LIKE :any THEN 1 ELSE 0 END) AS score
+            FROM utilisateur
+            WHERE user_name LIKE :any OR email LIKE :any
             ORDER BY $orderBy
             $limitSql
-            ";
+        ";
 
         $stmt = $bdd->prepare($sql);
-
-        $q_numeric = is_numeric($q) ? $q : null;
-
         $stmt->execute([
-            ":start"     => "$q%",
-            ":middle"    => "% $q%",
-            ":any"       => "%$q%",
-            ":q_numeric" => $q_numeric
+            ":start"  => "$q%",
+            ":middle" => "% $q%",
+            ":any"    => "%$q%"
         ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -596,5 +591,11 @@
         $stmt->bindValue(':boutique_id', $boutique_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /* date in French format (d/m/Y) */
+    function date_fr_short($date)
+    {
+        $date_obj = new DateTime($date);
+        return $date_obj->format('d/m/Y');
     }
 ?>

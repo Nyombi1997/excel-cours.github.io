@@ -40,6 +40,9 @@
 
         insert_bdd($bdd, "utilisateur", $insert_data);
 
+        /* creer des slugs s'il y'en a pas */
+        createSlugIfNeeded($bdd, "utilisateur");
+
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }

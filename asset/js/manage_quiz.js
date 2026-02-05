@@ -59,7 +59,7 @@ function uploadVideo() {
             title: "Choisissez une video",
             text: "",
             confirmButtonText: "OK",
-            confirmButtonColor: '#4caf50',
+            confirmButtonColor: site_color,
             timer: 1000
         })
         return;
@@ -94,8 +94,9 @@ function uploadVideo() {
                 title: "La video a été ajouté avec succès !",
                 text: "",
                 confirmButtonText: "OK",
-                confirmButtonColor: '#4caf50',
-                timer: 1000
+                confirmButtonColor: site_color,
+                timer: 1000,
+                iconColor: site_color
             }).then(() => {
                 window.location = "/cours";
             });
@@ -115,7 +116,7 @@ function uploadVideo() {
                     title: "La video utilise trop de bande passante",
                     text: "",
                     confirmButtonText: "OK",
-                    confirmButtonColor: '#4caf50',
+                    confirmButtonColor: site_color,
                     timer: 1000
                 })
             percentText.textContent = "Erreur ❌";
@@ -126,7 +127,7 @@ function uploadVideo() {
                 title: "Aucun fichier charger",
                 text: "",
                 confirmButtonText: "OK",
-                confirmButtonColor: '#4caf50',
+                confirmButtonColor: site_color,
                 timer: 1000
             })
             percentText.textContent = "Erreur ❌";

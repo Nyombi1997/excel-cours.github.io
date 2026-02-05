@@ -1,0 +1,1 @@
+let site_color = "#056bf1";

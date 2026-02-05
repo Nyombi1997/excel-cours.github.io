@@ -23,32 +23,34 @@
         <script src="<?php echo ASSET; ?>js/jquery-2.2.4.min.js?<?= filemtime(ROOT."asset/js/jquery-2.2.4.min.js") ?>"></script>
         <!-- cropper -->
         <script src="<?php echo ASSET; ?>js/cropper.min.js?<?= filemtime(ROOT."asset/js/cropper.min.js") ?>"></script>
+        <!-- site_color -->
+        <script src="<?php echo ASSET; ?>js/site_color.js?<?= filemtime(ROOT."asset/js/site_color.js") ?>"></script>
     </head>
     <body>
     <header>
-        <div class="logo"><a href="index.html">Excel <span>Cours</span></a></div>
+        <div class="logo"><a href="/accueil"><img src="<?= ASSET ?>images/logo/AbsoluHub_Color_2.webp" alt="" srcset=""></a></div>
         <nav class="" id="mobile_menu">
-        <div class="div_sortie_start_btn_mobile" id="sortie_nav_mobile">
-            <button class="start_btn_mobile view"><i class="fa-solid fa-times"></i></button>
-        </div>
-        <ul>
-            <li><a href="/contact">Contacts</a></li>
-            <li><a href="/cours">Cours</a></li>
-            <?php
-                /* si l'utilisateur est connecter */
-                if(isset($_SESSION['use_cours_excel_987654321']))
-                {
-                    echo '
-                        <li><a href="/compte">Compte</a></li>';
-                }
-                /* si l'admin est connecter */
-                if(isset($_SESSION['admin_cours_excel_987654321']))
-                {
-                    echo '
-                        <li><a href="/admin">Admin</a></li>';
-                }
-            ?>
-        </ul>
+            <div class="div_sortie_start_btn_mobile" id="sortie_nav_mobile">
+                <button class="start_btn_mobile view"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <ul>
+                <li><a href="/contact">Contacts</a></li>
+                <li><a href="/cours">Cours</a></li>
+                <?php
+                    /* si l'utilisateur est connecter */
+                    if(isset($_SESSION['use_cours_excel_987654321']))
+                    {
+                        echo '
+                            <li><a href="/compte">Compte</a></li>';
+                    }
+                    /* si l'admin est connecter */
+                    if(isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo '
+                            <li><a href="/admin">Admin</a></li>';
+                    }
+                ?>
+            </ul>
         </nav>
         <?php
             /* si l'utilisateur est connecter */
@@ -127,4 +129,32 @@
             ADD position INT NOT NULL AFTER id
         ");
     }
+    /* ajouter slug dans utilisateur */
+    $table = "utilisateur";
+    $column = "slug";
+
+    $sql = "
+        SELECT COUNT(*) 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE()
+        AND TABLE_NAME = :table
+        AND COLUMN_NAME = :column
+    ";
+
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([
+        ':table'  => $table,
+        ':column' => $column
+    ]);
+
+    $exists = $stmt->fetchColumn();
+    if ($exists == 0) {
+        $bdd->exec("
+            ALTER TABLE utilisateur
+            ADD slug TEXT NULL AFTER admin
+        ");
+    }
+
+    /* creer des slugs s'il y'en a pas */
+    createSlugIfNeeded($bdd, "utilisateur");
 ?>

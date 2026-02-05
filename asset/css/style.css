@@ -1,19 +1,19 @@
-
-
 *{
-    --blanc: #f6f9f8;
+    --blanc: #fcfdfd;
     --noir: #000000;
     --griz: #999999;
-    --base_1_couleur: #4caf50;
-    --base_1_couleur_nuance_1: #103820;
+    --base_1_couleur: #056bf1;
+    --base_1_couleur_nuance_1: #0b3469;
+    --base_1_couleur_nuance_2: #c6dbf5;
+    --base_1_couleur_nuance_3: #0b3469;
     --excel-green: var(--base_1_couleur); 
     --excel-dark: var(--base_1_couleur_nuance_1);
     --vert-excel : var(--base_1_couleur);
     --primary: var(--base_1_couleur);
     --base_2_couleur: #ffabe7;
     --base_3_couleur: #b390df;
-    --vert: #4eb365ff;
-    --vert_nuance_1: #3c844dff;
+    --vert: #0a5fce;
+    --vert_nuance_1: #0347a0;
     --bleu: #1c2b3a;
     --rouge: #dc3545;
     --jaune: #F8C61E;
@@ -64,11 +64,16 @@ nav ul li a {
     font-weight: bold;
     font-size: 1.5rem;
     color: #1c2b3a;
+    width: 50%;
 }
 .logo a {
     text-decoration: none;
     outline: none;
     color: #1c2b3a;
+}
+.logo img {
+    width: 30%;
+    display: inline-block;
 }
 .logo a span {
     text-decoration: none;
@@ -112,7 +117,7 @@ nav ul li a {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, #d6f5e4 10%, #edf8f1 50%, #f6f9f8 100%);
+    background: radial-gradient(circle, var(--base_1_couleur_nuance_2) 10%, var(--blanc) 50%, var(--blanc) 100%);
     border-radius: 50%;
     z-index: 0;
 }
@@ -800,6 +805,160 @@ input[type="radio"]
     color: var(--base_1_couleur_nuance_1);
     background: var(--base_1_couleur_nuance_1);
     accent-color: var(--base_1_couleur_nuance_1);
+}
+
+/* manage user */
+.container_all_users
+{
+    height: calc(100vh - 60px);
+    overflow: auto;
+    width: 100%;
+    padding: 10px;
+    padding-top: 50px;
+    position: relative;
+}
+.div_barre_recherche
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+}
+.barre_recherche
+{
+    position: relative;
+    padding: 0;
+    width: 50%;
+    height: 35px;
+}
+.barre_recherche
+input
+{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.16);
+    outline: none;
+    border: 1px solid var(--base_1_couleur_nuance_2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding-left: 30px;
+}
+.barre_recherche
+i
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: var(--bg);
+}
+.div_detail_user
+{
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.div_no_actif_user_manage_user
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--base_1_couleur_nuance_1);
+    letter-spacing: 2.5px;
+}
+.detail_user
+{
+    width: 25%;
+    padding: 10px;
+    text-decoration: none;
+    outline: none;
+}
+.sous_detail_user
+{
+    width: 100%;
+    padding: 10px;
+    background: var(--bg);
+    border-radius: 10px;
+}
+.profil_manage_user
+{
+    padding: 10px 0px;
+}
+.picture_profil_manage_user
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.picture_profil_manage_user
+img
+{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--base_1_couleur);
+    padding: 5px;
+}
+.nom_profil_manage_user
+{
+    width: 100%;
+    padding: 5px 0px;
+    font-size: 16px;
+    color: var(--noir);
+    font-weight: bold;
+}
+.email_profil_manage_user
+{
+    width: 100%;
+    padding: 5px 0px;
+    font-size: 14px;
+    font-weight: normal;
+    color: var(--noir);
+}
+.status_manage_user
+{
+    background: var(--blanc);
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.details_manage_user
+{
+    width: 50%;
+    padding: 0px 5px;
+    font-size: 16px;
+}
+.titre_details_manage_user
+{
+    width: 100%;
+    padding: 5px 0px;
+    color: var(--base_1_couleur_nuance_1);
+}
+.text_details_manage_user
+{
+    font-weight: bold;
+    color: var(--noir);
 }
 
 

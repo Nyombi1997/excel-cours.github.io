@@ -5,14 +5,23 @@
     }
 
     /* si l'utilisateur est connecter */
-    if(!isset($_SESSION['use_cours_excel_987654321']))
+    if(!isset($_SESSION['use_cours_excel_987654321']) || !isset($_SESSION['admin_cours_excel_987654321']))
     {
         header("location: connexion");
     }
     else
     {
-        /* retrouver le profil utilisateur */
-        $user = select_bdd($bdd, "utilisateur", $where = "unique_id = '".$_SESSION['use_cours_excel_987654321']."'", $limit = null, $offset = 0, $order = null, $random = false);
+        if($GLOBALS['user'])
+        {
+            /* retrouver le profil utilisateur */
+            $user = select_bdd($bdd, "utilisateur", $where = "slug = '".$GLOBALS['user']['slug']."'", $limit = null, $offset = 0, $order = null, $random = false);
+        }
+        else
+        {
+            $unique_id = isset($_SESSION['use_cours_excel_987654321']);
+            /* retrouver le profil utilisateur */
+            $user = select_bdd($bdd, "utilisateur", $where = "unique_id = '".$unique_id."'", $limit = null, $offset = 0, $order = null, $random = false);
+        }
         if(count($user)==0)
         {
             header("location: connexion");
@@ -38,14 +47,24 @@
             <span style="font-weight: bold;">Ma Progression</span>
             <div class="progress-bar"><div class="progress-fill"></div></div>
             <small>65% complété - Module 4</small>
-            <a href="" class="btn" style="margin-top: 10px; padding: 8px;">Continuer le cours</a>
+            <?php
+                if(!isset($_SESSION['admin_cours_excel_987654321']))
+                {
+                    echo '<a href="" class="btn" style="margin-top: 10px; padding: 8px;">Continuer le cours</a>';
+                }
+            ?>
         </div>
-        
-        <div style="margin-top: auto;">
-            <h4>Besoin d'aide ?</h4>
-            <textarea id="supportMsg" placeholder="Votre question..." rows="3"></textarea>
-            <button onclick="sendSupport()" style="margin-top: 10px; padding: 8px;">Contacter le support</button>
-        </div>
+        <?php
+            if(!isset($_SESSION['admin_cours_excel_987654321']))
+            {
+                echo '
+                    <div style="margin-top: auto;">
+                        <h4>Besoin d\'aide ?</h4>
+                        <textarea id="supportMsg" placeholder="Votre question..." rows="3"></textarea>
+                        <button onclick="sendSupport()" style="margin-top: 10px; padding: 8px;">Contacter le support</button>
+                    </div>';
+            }
+        ?>
     </aside>
 
     <main class="main-content">
@@ -53,7 +72,12 @@
             <h3>Informations Personnelles</h3>
             <div class="profile-pic-container">
                 <img src="<?= $profile ?>" id="avatar-preview" class="profile-pic">
-                <label for="file-input" class="upload-btn">＋</label>
+                <?php
+                    if(!isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo '<label for="file-input" class="upload-btn">＋</label>';
+                    }
+                ?>
                 <input type="file" id="file-input" style="display:none" accept="image/*">
             </div>
             
@@ -61,11 +85,19 @@
             <div action="update_profile.php" method="POST" class="grid-form">
                 <div>
                     <label>Nom complet</label>
-                    <input type="text" name="username" value="<?= $user['user_name'] ?>">
+                    <input type="text" name="username" value="<?= $user['user_name'] ?>" <?php
+                    if(isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo 'readonly';
+                    }?>>
                 </div>
                 <div>
                     <label>Email</label>
-                    <input type="email" name="email" value="<?= $user['email'] ?>">
+                    <input type="email" name="email" value="<?= $user['email'] ?>" <?php
+                    if(isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo 'readonly';
+                    }?>>
                 </div>
                 <div class="full-width">
                     <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
@@ -73,14 +105,26 @@
                 </div>
                 <div>
                     <label>Ancien mot de passe</label>
-                    <input type="password" name="old_pwd">
+                    <input type="password" name="old_pwd" <?php
+                    if(isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo 'readonly';
+                    }?>>
                 </div>
                 <div>
                     <label>Nouveau mot de passe</label>
-                    <input type="password" name="new_pwd">
+                    <input type="password" name="new_pwd" <?php
+                    if(isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo 'readonly';
+                    }?>>
                 </div>
-                <div class="full-width">
-                    <button type="submit">Mettre à jour mon compte</button>
+                <div class="full-width"><?php
+                    if(!isset($_SESSION['admin_cours_excel_987654321']))
+                    {
+                        echo '<button type="submit">Mettre à jour mon compte</button>';
+                    }?>
+                    
                 </div>
             </div>
         </div>

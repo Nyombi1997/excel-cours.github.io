@@ -92,6 +92,9 @@
     {
         opacity: .5;
     }
+    .logo img {
+        width: 50%;
+    }
     /* cours */
     .corps_cours
     {
@@ -141,5 +144,14 @@
     .ajout_contents
     {
         cursor: initial;
+    }
+    /* manage user */
+    .detail_user
+    {
+        width: 100%;
+    }
+    .barre_recherche
+    {
+        width: 90%;
     }
 }
