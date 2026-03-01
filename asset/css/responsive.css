@@ -154,4 +154,41 @@
     {
         width: 90%;
     }
+    /* footer */
+    .footer
+    {
+        padding: 10px;
+        padding-top: 85px;
+        border-radius: 50px 50px 0px 0px;
+        margin-top: 85px;
+    }
+    .div_logo_footer
+    {
+        top: -75px;
+    }
+    .div_logo_footer
+    img
+    {
+        height: 100px;
+    }
+    .div_img_logo_footer
+    {
+        width: 150px;
+        height: 150px;
+    }
+    .contact_rubriques_footer
+    {
+        width: 100%;
+        padding-right: 10px;
+        border-bottom: 1px solid var();
+    }
+    .div_souscription_rubriques_footer
+    {
+        width: 100%;
+    }
+    .div_lien_pages_rubriques_footer
+    {
+        width: 100%;
+        padding-left: 10px;
+    }
 }

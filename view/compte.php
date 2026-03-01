@@ -5,20 +5,23 @@
     }
 
     /* si l'utilisateur est connecter */
-    if(!isset($_SESSION['use_cours_excel_987654321']) || !isset($_SESSION['admin_cours_excel_987654321']))
+    if(!isset($_SESSION['use_cours_excel_987654321']))
     {
-        header("location: connexion");
+        //header("location: connexion");
     }
     else
     {
-        if($GLOBALS['user'])
+        if(isset($GLOBALS['user']))
         {
-            /* retrouver le profil utilisateur */
-            $user = select_bdd($bdd, "utilisateur", $where = "slug = '".$GLOBALS['user']['slug']."'", $limit = null, $offset = 0, $order = null, $random = false);
+            if($GLOBALS['user'])
+            {
+                /* retrouver le profil utilisateur */
+                $user = select_bdd($bdd, "utilisateur", $where = "slug = '".$GLOBALS['user']['slug']."'", $limit = null, $offset = 0, $order = null, $random = false);
+            }
         }
         else
         {
-            $unique_id = isset($_SESSION['use_cours_excel_987654321']);
+            $unique_id = $_SESSION['use_cours_excel_987654321'];
             /* retrouver le profil utilisateur */
             $user = select_bdd($bdd, "utilisateur", $where = "unique_id = '".$unique_id."'", $limit = null, $offset = 0, $order = null, $random = false);
         }

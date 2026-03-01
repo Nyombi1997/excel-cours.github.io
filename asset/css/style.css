@@ -961,6 +961,137 @@ img
     color: var(--noir);
 }
 
+/* footer */
+.footer
+{
+    padding: 10px;
+    padding-top: 150px;
+    display: block;
+    border-radius: 100px 100px 0px 0px;
+    background: var(--noir);
+    position: relative;
+    margin-top: 125px;
+}
+.div_logo_footer
+{
+    position: absolute;
+    top: -125px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+}
+.div_logo_footer
+img
+{
+    height: 200px;
+    width: auto;
+}
+.div_img_logo_footer
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
+    border: 2px solid var(--blanc);
+}
+.container_rubriques_footer
+{
+    width: 100%;
+    padding: 10px 0px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.contact_rubriques_footer
+{
+    width: 33.33%;
+    padding: 0px 10px;
+    color: var(--blanc);
+    padding-right: 50px;
+}
+.sous_details_contact_rubriques_footer
+{
+    width: 100%;
+    padding: 10px 0px;
+    margin: 10px 0px;
+    font-size: 16px;
+}
+.div_souscription_rubriques_footer
+{
+    width: 33.33%;
+    padding: 10px 0px;
+    color: var(--blanc);
+}
+.text_souscription_rubriques_footer
+{
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 0px;
+}
+.div_input_rubriques_footer
+{
+    width: 100%;
+    padding: 10px 0px;
+}
+.input_rubriques_footer
+{
+    width: 100%;
+    position: relative;
+    padding: 0 0;
+}
+.input_rubriques_footer
+input
+{
+    width: 100%;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background: var(--blanc);
+    color: var(--noir);
+    padding: 10px;
+    font-size: 16px;
+    padding-right: 105px;
+}
+.input_rubriques_footer
+button
+{
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    border-radius: 0px 10px 10px 0px;
+    background: var(--base_1_couleur);
+    color: var(--blanc);
+    font-size: 16px;
+    border: none;
+}
+.div_lien_pages_rubriques_footer
+{
+    width: 33.33%;
+    padding: 0px 10px;
+    padding-left: 50px;
+}
+.div_lien_pages_rubriques_footer
+a
+{
+    display: block;
+    width: 100%;
+    padding: 10px 0px;
+    color: var(--blanc);
+    text-decoration: none;
+    outline: none;
+}
+
 
 
 

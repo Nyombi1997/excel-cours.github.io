@@ -5,3 +5,7 @@
 		<a href="/cours">Commencer le cour</a>
 	</div>
 </section>
+<?php 
+	/* footer */
+	include_once (VIEW."/composant/footer.php");
+?>
