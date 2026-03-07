@@ -49,5 +49,11 @@
             $myView = new View('users-management');
             $myView->render('Gestion cours AbsoluHub | Apprenez à votre rythme !');
         }
+        public function showContact ()
+        {
+            /* ramener la vers users-management */
+            $myView = new View('contact');
+            $myView->render('Gestion cours AbsoluHub | Apprenez à votre rythme !');
+        }
     }
 ?>

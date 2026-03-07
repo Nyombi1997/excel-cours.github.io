@@ -154,7 +154,13 @@
             ADD slug TEXT NULL AFTER admin
         ");
     }
+?>
 
-    /* creer des slugs s'il y'en a pas */
-    createSlugIfNeeded($bdd, "utilisateur");
+
+<?php 
+    createTable('souscription_news_letter', [
+        'id INT AUTO_INCREMENT PRIMARY KEY',
+        'email TEXT NULL',
+        'date_ajout DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP'
+    ]);
 ?>

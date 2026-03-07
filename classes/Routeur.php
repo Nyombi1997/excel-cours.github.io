@@ -17,6 +17,8 @@
                             "admin" => ["controller" => 'Home', "method" => 'showAdmin'],
                             "gestion-cours" => ["controller" => 'Home', "method" => 'showGestionCours'],
                             "gestion-utilisateurs" => ["controller" => 'Home', "method" => 'showGestionUsers'],
+
+                            "contact" => ["controller" => 'Home', "method" => 'showContact'],
                         ];
 
         public function __construct($request) {

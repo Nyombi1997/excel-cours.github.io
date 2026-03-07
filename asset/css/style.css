@@ -1,6 +1,7 @@
 *{
     --blanc: #fcfdfd;
     --noir: #000000;
+    --noir_nuance_1: #1C1C1C;
     --griz: #999999;
     --base_1_couleur: #056bf1;
     --base_1_couleur_nuance_1: #0b3469;
@@ -59,6 +60,19 @@ nav ul li a {
     text-decoration: none;
     color: #1c2b3a;
     font-weight: 500;
+}
+.rotate
+{
+    display: inline-block;
+    animation: rotation 2s linear infinite;
+}
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 .logo {
     font-weight: bold;
@@ -1074,6 +1088,12 @@ button
     color: var(--blanc);
     font-size: 16px;
     border: none;
+    cursor: pointer;
+}
+.input_rubriques_footer
+button:active
+{
+    opacity: .5;
 }
 .div_lien_pages_rubriques_footer
 {
@@ -1090,6 +1110,31 @@ a
     color: var(--blanc);
     text-decoration: none;
     outline: none;
+}
+.copyright
+{
+    width: 100%;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--griz);
+    text-align: center;
+    padding: 20px 0px;
+}
+.copyright
+strong,
+.copyright
+a
+{
+    color: var(--griz);
+    outline: none;
+}
+.copyright
+a
+{
+    color: var(--griz);
+    outline: none;
+    font-weight: 800;
+    text-underline-offset: 2.5px;
 }
 
 

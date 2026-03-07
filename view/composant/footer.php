@@ -31,8 +31,8 @@
             </div>
             <div class="div_input_rubriques_footer">
                 <div class="input_rubriques_footer">
-                    <form action="" method="post">
-                        <input type="email" name="" id="" placeholder="Entrez votre adresse email">
+                    <form action="" method="post" id="form_souscription_new_letter">
+                        <input type="email" name="" id="email_souscription_new_letter" placeholder="Entrez votre adresse email" required>
                         <button type="submit">Envoyer</button>
                     </form>
                 </div>
@@ -40,9 +40,14 @@
         </div>
         <!-- details -->
         <div class="div_lien_pages_rubriques_footer">
-            <a href="">Contact</a>
+            <a href="/contact">Contact</a>
             <a href="">Qui somme nous ?</a>
             <a href="">FAQ</a>
         </div>
     </div>
+    <div class="copyright">
+        Tout droits réservés <strong>AbsoluHub</strong> designed by <a href="edosysteme.com">edosysteme</a>
+    </div>
 </footer>
+<!-- footer -->
+<script src="<?php echo ASSET; ?>js/footer.js?<?= filemtime(ROOT."asset/js/footer.js") ?>"></script>

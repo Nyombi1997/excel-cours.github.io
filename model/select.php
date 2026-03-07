@@ -188,7 +188,7 @@
         return $stmt->execute();
     }
 
-    function insert_bdd($bdd, $base, $insert_data) 
+    function insert_bdd($bdd, $base, $insert_data)
     {
         /**
          * Tableau associatif contenant les données à insérer dans la base de données.
