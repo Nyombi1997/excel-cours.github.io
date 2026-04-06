@@ -1,201 +1,135 @@
 <?php
-    // Démarrer la session uniquement si elle n'est pas déjà active
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    include_once FONCTION . 'profile_context.php';
+    include_once ROOT . 'fonctions/course_bootstrap.php';
+
+    profile_start_session_if_needed();
+    ensure_learning_schema($bdd);
+
+    $user = profile_get_viewed_user($bdd);
+    if (!$user) {
+        header("location: /connexion");
+        exit;
     }
 
-    /* si l'utilisateur est connecter */
-    if(!isset($_SESSION['use_cours_excel_987654321']))
-    {
-        //header("location: connexion");
-    }
-    else
-    {
-        if(isset($GLOBALS['user']))
-        {
-            if($GLOBALS['user'])
-            {
-                /* retrouver le profil utilisateur */
-                $user = select_bdd($bdd, "utilisateur", $where = "slug = '".$GLOBALS['user']['slug']."'", $limit = null, $offset = 0, $order = null, $random = false);
-            }
-        }
-        else
-        {
-            $unique_id = $_SESSION['use_cours_excel_987654321'];
-            /* retrouver le profil utilisateur */
-            $user = select_bdd($bdd, "utilisateur", $where = "unique_id = '".$unique_id."'", $limit = null, $offset = 0, $order = null, $random = false);
-        }
-        if(count($user)==0)
-        {
-            header("location: connexion");
-        }
-        else
-        {
-            $user = $user[0];
-            if($user['profile']=='')
-            {
-                $profile = ASSET.'images/profile/default.jpg';
-            }
-            else
-            {
-                $profile = ASSET.'images/profile/'.$user['profile'];
-            }
-        }
-    }
+    $can_edit_profile = profile_can_edit_user($user);
+    $profile_image = profile_get_avatar_url($user);
+    $member_since = !empty($user['date_ajout']) ? date_fr_short($user['date_ajout']) : 'Non renseignÃ©e';
 
+    $startedCourses = [];
+    if (!empty($user['unique_id'])) {
+        $startedStmt = $bdd->prepare("
+            SELECT DISTINCT c.*
+            FROM learning_user_progress p
+            INNER JOIN learning_courses c ON c.id = p.course_id
+            WHERE p.user_unique_id = :user_unique_id
+            ORDER BY c.position ASC, c.id ASC
+        ");
+        $startedStmt->execute([
+            ':user_unique_id' => (string) $user['unique_id']
+        ]);
+        $startedCourses = $startedStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 ?>
-<div class="container_profile_cours_excel">
+
+<div class="container_profile_cours_excel profile-page-reset">
     <aside class="sidebar">
-        <div class="card" style="padding: 15px; box-shadow: none; border: 1px solid #edf2f7;">
-            <span style="font-weight: bold;">Ma Progression</span>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <small>65% complété - Module 4</small>
-            <?php
-                if(!isset($_SESSION['admin_cours_excel_987654321']))
-                {
-                    echo '<a href="" class="btn" style="margin-top: 10px; padding: 8px;">Continuer le cours</a>';
-                }
-            ?>
+        <div class="card profile-sidebar-card">
+            <span class="profile-sidebar-kicker">Espace compte</span>
+            <h2 class="profile-sidebar-title">Mon profil</h2>
+            <p class="profile-sidebar-text">
+                Retrouvez votre profil et la progression de vos cours dÃ©jÃ  commencÃ©s.
+            </p>
         </div>
-        <?php
-            if(!isset($_SESSION['admin_cours_excel_987654321']))
-            {
-                echo '
-                    <div style="margin-top: auto;">
-                        <h4>Besoin d\'aide ?</h4>
-                        <textarea id="supportMsg" placeholder="Votre question..." rows="3"></textarea>
-                        <button onclick="sendSupport()" style="margin-top: 10px; padding: 8px;">Contacter le support</button>
-                    </div>';
-            }
-        ?>
+
+        <div class="card profile-sidebar-card">
+            <span style="font-weight: bold;">Cours commencÃ©s</span>
+            <?php if (!empty($startedCourses)) { ?>
+                <div class="profile-course-progress-list">
+                    <?php foreach ($startedCourses as $course) { ?>
+                        <?php
+                            $courseProgress = learning_get_course_progress($bdd, (string) $user['unique_id'], (int) $course['id']);
+                        ?>
+                        <a href="/details-cours?course=<?= urlencode((string) $course['slug']) ?>" class="profile-course-progress-item">
+                            <div class="profile-course-progress-head">
+                                <strong><?= htmlspecialchars((string) $course['title']) ?></strong>
+                                <span><?= (int) $courseProgress['progress_percent'] ?>%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: <?= (int) $courseProgress['progress_percent'] ?>%;"></div>
+                            </div>
+                            <small><?= (int) $courseProgress['completed_items'] ?> Ã©tape(s) validÃ©e(s) sur <?= (int) $courseProgress['total_items'] ?></small>
+                        </a>
+                    <?php } ?>
+                </div>
+            <?php } else { ?>
+                <div class="profile-empty-box">
+                    Aucun cours commencÃ© pour le moment.
+                </div>
+            <?php } ?>
+        </div>
+
+        <div class="card profile-sidebar-card">
+            <span style="font-weight: bold;">RÃ©sumÃ©</span>
+            <div class="profile-sidebar-list">
+                <div class="profile-sidebar-item">
+                    <span>Membre depuis</span>
+                    <strong><?= htmlspecialchars($member_since) ?></strong>
+                </div>
+                <div class="profile-sidebar-item">
+                    <span>Adresse e-mail</span>
+                    <strong><?= htmlspecialchars($user['email']) ?></strong>
+                </div>
+            </div>
+        </div>
+
+        <?php if ($can_edit_profile) { ?>
+            <div class="card profile-sidebar-card">
+                <span style="font-weight: bold;">Messagerie</span>
+                <div class="profile-sidebar-list">
+                    <a href="/contact" class="account-secondary-btn">Laisser un message</a>
+                    <a href="/mes-messages" class="account-secondary-btn">Voir mes conversations</a>
+                </div>
+            </div>
+        <?php } ?>
     </aside>
 
     <main class="main-content">
-        <div class="card">
-            <h3>Informations Personnelles</h3>
-            <div class="profile-pic-container">
-                <img src="<?= $profile ?>" id="avatar-preview" class="profile-pic">
-                <?php
-                    if(!isset($_SESSION['admin_cours_excel_987654321']))
-                    {
-                        echo '<label for="file-input" class="upload-btn">＋</label>';
-                    }
-                ?>
-                <input type="file" id="file-input" style="display:none" accept="image/*">
-            </div>
-            
-            <!-- form -->
-            <div action="update_profile.php" method="POST" class="grid-form">
-                <div>
-                    <label>Nom complet</label>
-                    <input type="text" name="username" value="<?= $user['user_name'] ?>" <?php
-                    if(isset($_SESSION['admin_cours_excel_987654321']))
-                    {
-                        echo 'readonly';
-                    }?>>
+        <div class="card profile-intro-card">
+            <div class="profile-intro-grid">
+                <div class="profile-pic-container profile-pic-container-large">
+                    <img src="<?= $profile_image ?>" class="profile-pic" alt="Photo de profil">
                 </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" name="email" value="<?= $user['email'] ?>" <?php
-                    if(isset($_SESSION['admin_cours_excel_987654321']))
-                    {
-                        echo 'readonly';
-                    }?>>
-                </div>
-                <div class="full-width">
-                    <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
-                    <h4>Sécurité</h4>
-                </div>
-                <div>
-                    <label>Ancien mot de passe</label>
-                    <input type="password" name="old_pwd" <?php
-                    if(isset($_SESSION['admin_cours_excel_987654321']))
-                    {
-                        echo 'readonly';
-                    }?>>
-                </div>
-                <div>
-                    <label>Nouveau mot de passe</label>
-                    <input type="password" name="new_pwd" <?php
-                    if(isset($_SESSION['admin_cours_excel_987654321']))
-                    {
-                        echo 'readonly';
-                    }?>>
-                </div>
-                <div class="full-width"><?php
-                    if(!isset($_SESSION['admin_cours_excel_987654321']))
-                    {
-                        echo '<button type="submit">Mettre à jour mon compte</button>';
-                    }?>
-                    
+
+                <div class="profile-intro-content">
+                    <span class="profile-inline-badge"><?= $can_edit_profile ? 'Mon compte' : 'Profil visible' ?></span>
+                    <h1 class="profile-intro-title"><?= htmlspecialchars($user['user_name']) ?></h1>
+                    <p class="profile-intro-text">
+                        Une page claire pour consulter votre profil et reprendre vos formations lÃ  oÃ¹ vous vous Ãªtes arrÃªtÃ©.
+                    </p>
+
+                    <div class="profile-summary-grid">
+                        <div class="profile-summary-item">
+                            <span>Nom d'utilisateur</span>
+                            <strong><?= htmlspecialchars($user['user_name']) ?></strong>
+                        </div>
+                        <div class="profile-summary-item">
+                            <span>Adresse e-mail</span>
+                            <strong><?= htmlspecialchars($user['email']) ?></strong>
+                        </div>
+                        <div class="profile-summary-item">
+                            <span>Date d'inscription</span>
+                            <strong><?= htmlspecialchars($member_since) ?></strong>
+                        </div>
+                    </div>
+
+                    <?php if ($can_edit_profile) { ?>
+                        <div class="profile-main-actions">
+                            <a href="/modifier-compte" class="account-primary-btn">Modifier mes informations</a>
+                            <a href="/mes-messages" class="account-secondary-btn">Mes messages</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
     </main>
-
-    <div id="cropper-modal">
-        <div class="cropper-box">
-            <div style="height: 300px; margin-bottom: 20px;">
-                <img id="image-to-crop" style="max-width: 100%;">
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="cropImage()" style="flex:2">Valider</button>
-                <button onclick="closeModal()" style="flex:1; background:#718096;">Annuler</button>
-            </div>
-        </div>
-    </div>
 </div>
-<script>
-    // Logique Cropper (identique mais adaptée au responsive)
-    let cropper;
-    const fileInput = document.getElementById('file-input');
-    const imageToCrop = document.getElementById('image-to-crop');
-    const modal = document.getElementById('cropper-modal');
-
-    fileInput.onchange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                imageToCrop.src = event.target.result;
-                modal.style.display = 'flex';
-                if(cropper) cropper.destroy();
-                cropper = new Cropper(imageToCrop, { 
-                    aspectRatio: 1, 
-                    viewMode: 1,
-                    responsive: true 
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    function cropImage() {
-        const canvas = cropper.getCroppedCanvas({ width: 200, height: 200 });
-        const dataURL = canvas.toDataURL();
-        document.getElementById('avatar-preview').src = dataURL;
-        
-        // Ici, on envoie le dataURL au serveur via AJAX/Fetch
-        fetch('/fonctions/upload_avatar.php', {
-            method: 'POST',
-            body: JSON.stringify({ image: dataURL }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        closeModal();
-    }
-
-    function closeModal() { modal.style.display = 'none'; }
-    
-    function sendSupport() {
-        const msg = document.getElementById('supportMsg').value;
-        document.getElementById('supportMsg').value = "";
-        /* composer le message whatsapp */
-        const message = msg+``;
-
-        const whatsappLink =
-        "https://wa.me/+243813689713?text=" +
-        encodeURIComponent(message);
-        
-        window.open(whatsappLink, "_blank");
-    }
-</script>

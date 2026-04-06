@@ -38,7 +38,7 @@
             <button type="button" class="learning-admin-btn primary" id="js_create_course">
                 Nouveau cours
             </button>
-            <a href="/cours<?= $selectedCourse ? '?course=' . urlencode($selectedCourse['slug']) : '' ?>" class="learning-admin-btn secondary">
+            <a href="/details-cours<?= $selectedCourse ? '?course=' . urlencode($selectedCourse['slug']) : '' ?>" class="learning-admin-btn secondary">
                 Voir l'espace cours
             </a>
         </div>

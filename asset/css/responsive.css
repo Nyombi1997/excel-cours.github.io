@@ -140,6 +140,191 @@
     .grid-form { grid-template-columns: 1fr; }
     .container_profile_cours_excel 
     .full-width { grid-column: span 1; }
+    .account-shell
+    {
+        padding: 14px;
+        gap: 16px;
+    }
+    .account-sidebar
+    {
+        width: 100%;
+        border-radius: 24px;
+        padding: 20px 18px;
+        gap: 18px;
+    }
+    .account-sidebar__brand strong
+    {
+        font-size: 24px;
+    }
+    .account-hero
+    {
+        grid-template-columns: 1fr;
+    }
+    .account-hero__main
+    {
+        grid-template-columns: 1fr;
+        padding: 18px;
+        gap: 18px;
+    }
+    .account-avatar-wrap
+    {
+        width: 140px;
+        height: 140px;
+    }
+    .account-hero__content h1
+    {
+        font-size: 28px;
+    }
+    .account-hero__meta,
+    .account-grid,
+    .account-form__grid
+    {
+        grid-template-columns: 1fr;
+    }
+    .account-field--full
+    {
+        grid-column: span 1;
+    }
+    .account-panel
+    {
+        padding: 18px;
+    }
+    .account-panel__head h2
+    {
+        font-size: 22px;
+    }
+    .account-form__actions,
+    .account-form__footer,
+    .account-cropper-actions
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .account-primary-btn,
+    .account-secondary-btn
+    {
+        width: 100%;
+    }
+    .account-password-wrap input
+    {
+        padding-right: 16px;
+        padding-bottom: 52px;
+    }
+    .account-password-toggle
+    {
+        top: auto;
+        right: 10px;
+        bottom: 8px;
+    }
+    .account-cropper-card
+    {
+        padding: 16px;
+        border-radius: 20px;
+    }
+    .account-cropper-card__head
+    {
+        align-items: flex-start;
+    }
+    .account-cropper-card__head h3
+    {
+        font-size: 20px;
+    }
+    .profile-intro-grid,
+    .profile-summary-grid,
+    .profile-edit-header
+    {
+        grid-template-columns: 1fr;
+    }
+    .profile-pic-container-large
+    {
+        width: 130px !important;
+        height: 130px !important;
+    }
+    .profile-intro-title
+    {
+        font-size: 24px;
+    }
+    .profile-password-field input
+    {
+        padding-right: 12px !important;
+        padding-bottom: 48px !important;
+    }
+    .container_profile_cours_excel .profile-password-field .account-password-toggle
+    {
+        top: auto;
+        right: 8px;
+        bottom: 8px;
+    }
+    .profile-course-progress-head,
+    .account-upload-progress__head
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .contact-page-shell,
+    .message-page-shell
+    {
+        padding: 14px;
+    }
+    .contact-page-hero,
+    .contact-page-grid,
+    .message-list-grid,
+    .contact-identity-box,
+    .conversation-head-card
+    {
+        grid-template-columns: 1fr;
+    }
+    .contact-page-hero__content,
+    .contact-highlight-card,
+    .contact-panel,
+    .message-empty-card,
+    .conversation-head-card
+    {
+        padding: 18px;
+    }
+    .contact-page-hero__content h1,
+    .message-page-hero h1
+    {
+        font-size: 27px;
+    }
+    .contact-page-hero__badges
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .contact-page-hero__badges span
+    {
+        width: 100%;
+    }
+    .contact-action-card
+    {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .contact-action-card__icon
+    {
+        justify-content: flex-start;
+    }
+    .contact-form-actions,
+    .message-page-actions
+    {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .contact-form-actions .account-primary-btn,
+    .contact-form-actions .account-secondary-btn,
+    .message-page-actions .account-primary-btn,
+    .message-page-actions .account-secondary-btn
+    {
+        width: 100%;
+        min-width: 0;
+    }
+    .message-list-card,
+    .conversation-bubble
+    {
+        padding: 18px;
+    }
     /* ajouter */
     .ajout_contents
     {
@@ -179,13 +364,69 @@
     }
     .learning-course-sidebar
     {
-        position: static;
-        top: auto;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        bottom: 0;
+        width: min(88vw, 340px);
+        z-index: 60;
+        border-radius: 0 20px 20px 0;
+        transform: translateX(-105%);
+        transition: transform .25s ease;
+        overflow: auto;
+        background: #ffffff;
+    }
+    .learning-course-sidebar.active
+    {
+        transform: translateX(0);
+    }
+    .learning-program-toggle
+    {
+        display: inline-flex;
+    }
+    .learning-program-overlay
+    {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.28);
+        z-index: 55;
+    }
+    .learning-program-overlay.active
+    {
+        display: block;
+    }
+    .learning-program-mobile-head
+    {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
     }
     .learning-grid.two,
     .learning-student-hero__meta
     {
         grid-template-columns: 1fr;
+    }
+    .learning-search-box
+    {
+        padding: 16px;
+    }
+    .learning-search-input
+    {
+        height: 52px;
+        font-size: 15px;
+    }
+    .learning-search-results__head,
+    .learning-search-loading,
+    .learning-search-empty
+    {
+        flex-direction: column;
+        align-items: flex-start;
     }
     .learning-course-card,
     .learning-item-card,
@@ -223,6 +464,14 @@
         width: 100%;
     }
     .learning-admin-btn
+    {
+        width: 100%;
+    }
+    .learning-back-row__actions
+    {
+        width: 100%;
+    }
+    .learning-back-row__actions .learning-admin-btn
     {
         width: 100%;
     }

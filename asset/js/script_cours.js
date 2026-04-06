@@ -106,11 +106,22 @@
             }).get();
         }
 
+        function openProgramMenu() {
+            $("#js_program_sidebar").addClass("active");
+            $("#js_program_overlay").addClass("active");
+        }
+
+        function closeProgramMenu() {
+            $("#js_program_sidebar").removeClass("active");
+            $("#js_program_overlay").removeClass("active");
+        }
+
         function activateItem(itemId) {
             $(".js_learning_item").removeClass("active");
             $('.js_learning_item[data-item-id="' + itemId + '"]').addClass("active");
             $(".js_learning_panel").removeClass("active");
             $('.js_learning_panel[data-item-id="' + itemId + '"]').addClass("active");
+            closeProgramMenu();
         }
 
         function saveProgress(itemId, watchedPercent) {
@@ -185,6 +196,14 @@
 
         $(document).on("click", ".js_learning_item", function () {
             activateItem($(this).data("item-id"));
+        });
+
+        $("#js_open_program_menu").on("click", function () {
+            openProgramMenu();
+        });
+
+        $("#js_close_program_menu, #js_program_overlay").on("click", function () {
+            closeProgramMenu();
         });
 
         $(".js_learning_video").each(function () {

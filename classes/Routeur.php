@@ -8,13 +8,19 @@
                             "accueil" => ["controller" => 'Home', "method" => 'showHome'],
 
                             "cours" => ["controller" => 'Home', "method" => 'showCours'],
+                            "details-cours" => ["controller" => 'Home', "method" => 'showCoursDetail'],
 
                             "connexion" => ["controller" => 'Home', "method" => 'showLogin'],
                             "inscription" => ["controller" => 'Home', "method" => 'showLogin'],
                             "deconnexion" => ["controller" => 'Home', "method" => 'showLogout'],
                             
                             "compte" => ["controller" => 'Home', "method" => 'showAccount'],
+                            "modifier-compte" => ["controller" => 'Home', "method" => 'showAccountEdit'],
+                            "mes-messages" => ["controller" => 'Home', "method" => 'showAccountMessages'],
+                            "ma-conversation" => ["controller" => 'Home', "method" => 'showAccountConversation'],
                             "admin" => ["controller" => 'Home', "method" => 'showAdmin'],
+                            "messages-admin" => ["controller" => 'Home', "method" => 'showAdminMessages'],
+                            "conversation-admin" => ["controller" => 'Home', "method" => 'showAdminConversation'],
                             "gestion-cours" => ["controller" => 'Home', "method" => 'showGestionCours'],
                             "creation-cours" => ["controller" => 'Home', "method" => 'showCreateCourse'],
                             "edition-cours" => ["controller" => 'Home', "method" => 'showEditCourse'],

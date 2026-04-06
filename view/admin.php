@@ -1,5 +1,5 @@
 <?php
-    // Démarrer la session uniquement si elle n'est pas déjà active
+    // DÃ©marrer la session uniquement si elle n'est pas dÃ©jÃ  active
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -18,4 +18,6 @@
     </div>
     <a href="/gestion-cours" class="link_admin">Gestion cours</a>
     <a href="/gestion-utilisateurs" class="link_admin">Gestion utilisateurs</a>
+    <a href="/messages-admin" class="link_admin">Messages reçus</a>
+    <a href="/deconnexion" class="link_admin">Se dÃ©connecter</a>
 </div>

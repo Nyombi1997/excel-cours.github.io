@@ -82,6 +82,39 @@
         ], 403);
     }
 
+    $courseSessionExists = isset($_SESSION['use_cours_excel_987654321']) || isset($_SESSION['admin_cours_excel_987654321']);
+
+    if ($action === 'search_courses') {
+        if (!$courseSessionExists) {
+            course_api_json([
+                'result' => 'error',
+                'msg' => "Votre session a expirÃ©."
+            ], 403);
+        }
+
+        $query = course_api_clean_text($_POST['q'] ?? '');
+        if ($query === '') {
+            course_api_json([
+                'result' => 'ok',
+                'msg' => '',
+                'results' => []
+            ]);
+        }
+
+        $results = learning_search_catalog(
+            $bdd,
+            $query,
+            !isset($_SESSION['admin_cours_excel_987654321']),
+            8
+        );
+
+        course_api_json([
+            'result' => 'ok',
+            'msg' => empty($results) ? "Aucun cours proche n'a Ã©tÃ© trouvÃ©." : '',
+            'results' => $results
+        ]);
+    }
+
     if ($action === 'save_course') {
         $courseId = isset($_POST['course_id']) ? (int) $_POST['course_id'] : 0;
         $title = course_api_clean_text($_POST['title'] ?? '');

@@ -53,8 +53,8 @@
             </ul>
         </nav>
         <?php
-            /* si l'utilisateur est connecter */
-            if(!isset($_SESSION['use_cours_excel_987654321']))
+            /* afficher la bonne action selon la session active */
+            if(!isset($_SESSION['use_cours_excel_987654321']) && !isset($_SESSION['admin_cours_excel_987654321']))
             {
                 echo '
                     <a href="/connexion" class="start-btn">Se connecter</a>';
@@ -67,8 +67,8 @@
         ?>
         <div class="div_start_btn_mobile">
         <?php
-            /* si l'utilisateur est connecter */
-            if(!isset($_SESSION['use_cours_excel_987654321']))
+            /* afficher la bonne action selon la session active */
+            if(!isset($_SESSION['use_cours_excel_987654321']) && !isset($_SESSION['admin_cours_excel_987654321']))
             {
                 echo '
                     <a href="/connexion" class="start_btn_mobile">Se connecter</a>';

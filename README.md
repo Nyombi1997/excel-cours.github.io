@@ -297,3 +297,163 @@ ALTER TABLE `learning_quiz_attempt_answers`
 
 Je n'ai volontairement supprimé aucune table ni colonne existante de ton projet.  
 Si tu veux plus tard fusionner complètement l'ancienne table `cours` avec ce nouveau modèle, on pourra faire une migration propre plutôt qu'un remplacement brutal.
+
+## Recherche des cours
+
+Aucune modification SQL n'est nécessaire pour la barre de recherche des cours.
+
+Tu n'as rien à coller dans phpMyAdmin pour cette fonctionnalité.
+
+## Espace profil utilisateur
+
+La nouvelle page `compte` permet maintenant à l'utilisateur de modifier :
+
+- son nom d'utilisateur ;
+- son adresse e-mail ;
+- son mot de passe ;
+- sa photo de profil recadrée avant envoi.
+
+## Point important sur la base SQL jointe
+
+Le dump SQL joint ne contient pas la table `utilisateur`, alors que ton projet l'utilise déjà pour :
+
+- `user_name`
+- `email`
+- `mdp`
+- `unique_id`
+- `profile`
+- `slug`
+- `admin`
+- `date_ajout`
+
+Si cette table existe déjà sur ton hébergement avec ces colonnes, tu n'as rien à faire.
+
+Si elle existe mais qu'il manque certaines colonnes, tu peux coller ceci dans phpMyAdmin :
+
+```sql
+ALTER TABLE `utilisateur`
+  ADD COLUMN `profile` TEXT NULL AFTER `unique_id`,
+  ADD COLUMN `admin` TINYINT(1) NOT NULL DEFAULT 0 AFTER `profile`,
+  ADD COLUMN `slug` TEXT NULL AFTER `admin`,
+  ADD COLUMN `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `slug`;
+```
+
+Si la table `utilisateur` n'existe pas encore dans ta vraie base, tu peux la créer avec ce script :
+
+```sql
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_name` TEXT NOT NULL,
+  `email` TEXT NOT NULL,
+  `mdp` TEXT NOT NULL,
+  `unique_id` VARCHAR(255) NOT NULL,
+  `profile` TEXT NULL,
+  `admin` TINYINT(1) NOT NULL DEFAULT 0,
+  `slug` TEXT NULL,
+  `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+```
+
+## Comportement retenu pour le profil
+
+- le `slug` existant est conservé si l'utilisateur change seulement son nom d'utilisateur ;
+- un `slug` est généré uniquement s'il manque encore sur le compte ;
+- l'admin ou un visiteur sur une page profil publique voient la page en lecture seule ;
+- la mise à jour du mot de passe reste optionnelle tant que les trois champs sécurité sont laissés vides.
+- 
+## Module contact et messagerie
+
+La page `contact` a Ã©tÃ© ajoutÃ©e avec cette logique :
+
+- elle n'est accessible qu'aux utilisateurs connectÃ©s ;
+- elle permet :
+  - d'appeler le numÃ©ro `+243 813 689 713` ;
+  - d'ouvrir WhatsApp sur ce numÃ©ro ;
+  - d'ouvrir la conversation WhatsApp de ce numÃ©ro ;
+  - de laisser un message directement sur le site ;
+- aprÃ¨s envoi, le formulaire se vide automatiquement ;
+- les messages sont consultables depuis des pages sÃ©parÃ©es :
+  - `mes-messages` et `ma-conversation` cÃ´tÃ© compte ;
+  - `messages-admin` et `conversation-admin` cÃ´tÃ© administration.
+
+## Important pour la base SQL du module contact
+
+Le dump SQL joint ne contient pas encore les tables nÃ©cessaires Ã  cette fonctionnalitÃ©.
+
+Je n'ai pas modifiÃ© `model/bdd.php` et je n'ai pas supposÃ© l'existence de tables/colonnes qui n'existent pas encore dans ton dump.  
+Pour que le module fonctionne, il faut donc ajouter ces tables dans ta base.
+
+## SQL Ã  coller directement dans phpMyAdmin pour le contact
+
+```sql
+CREATE TABLE IF NOT EXISTS `contact_conversations` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_unique_id` VARCHAR(255) NOT NULL,
+  `user_name` TEXT NULL,
+  `user_email` TEXT NULL,
+  `provenance` TEXT NULL,
+  `last_message_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_sender_type` VARCHAR(30) NOT NULL DEFAULT 'user',
+  `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_contact_conversation_user` (`user_unique_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `contact_messages` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `conversation_id` INT NOT NULL,
+  `sender_unique_id` VARCHAR(255) NOT NULL,
+  `sender_type` VARCHAR(30) NOT NULL DEFAULT 'user',
+  `sender_name` TEXT NULL,
+  `sender_email` TEXT NULL,
+  `provenance_page` VARCHAR(255) NULL,
+  `provenance_label` TEXT NULL,
+  `provenance_ip` VARCHAR(100) NULL,
+  `provenance_user_agent` TEXT NULL,
+  `message` LONGTEXT NOT NULL,
+  `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_contact_messages_conversation` (`conversation_id`, `date_ajout`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+```
+
+## Si les tables existent dÃ©jÃ  partiellement
+
+Tu peux adapter avec ces `ALTER TABLE` si besoin :
+
+```sql
+ALTER TABLE `contact_conversations`
+  ADD COLUMN `user_unique_id` VARCHAR(255) NOT NULL,
+  ADD COLUMN `user_name` TEXT NULL,
+  ADD COLUMN `user_email` TEXT NULL,
+  ADD COLUMN `provenance` TEXT NULL,
+  ADD COLUMN `last_message_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ADD COLUMN `last_sender_type` VARCHAR(30) NOT NULL DEFAULT 'user',
+  ADD COLUMN `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE `contact_messages`
+  ADD COLUMN `conversation_id` INT NOT NULL,
+  ADD COLUMN `sender_unique_id` VARCHAR(255) NOT NULL,
+  ADD COLUMN `sender_type` VARCHAR(30) NOT NULL DEFAULT 'user',
+  ADD COLUMN `sender_name` TEXT NULL,
+  ADD COLUMN `sender_email` TEXT NULL,
+  ADD COLUMN `provenance_page` VARCHAR(255) NULL,
+  ADD COLUMN `provenance_label` TEXT NULL,
+  ADD COLUMN `provenance_ip` VARCHAR(100) NULL,
+  ADD COLUMN `provenance_user_agent` TEXT NULL,
+  ADD COLUMN `message` LONGTEXT NOT NULL,
+  ADD COLUMN `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+```
+
+## Colonnes enregistrÃ©es pour la provenance
+
+Pour chaque message, le code enregistre :
+
+- le compte Ã©metteur (`sender_unique_id`, `sender_name`, `sender_email`) ;
+- le type de session (`sender_type`) ;
+- la page source (`provenance_page`) ;
+- le libellÃ© de provenance (`provenance_label`) ;
+- l'adresse IP (`provenance_ip`) ;
+- le `user_agent` (`provenance_user_agent`) ;
+- la date d'envoi (`date_ajout`).

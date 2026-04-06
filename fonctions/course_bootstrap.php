@@ -92,6 +92,121 @@
         }
     }
 
+    if (!function_exists('learning_normalize_search_text')) {
+        function learning_normalize_search_text(string $text): string
+        {
+            $normalized = trim(mb_strtolower($text, 'UTF-8'));
+            $transliterated = iconv('UTF-8', 'ASCII//TRANSLIT', $normalized);
+            if ($transliterated !== false) {
+                $normalized = $transliterated;
+            }
+            $normalized = preg_replace('/[^a-z0-9\s]+/i', ' ', $normalized);
+            $normalized = preg_replace('/\s+/', ' ', (string) $normalized);
+
+            return trim((string) $normalized);
+        }
+    }
+
+    if (!function_exists('learning_extract_search_terms')) {
+        function learning_extract_search_terms(string $text): array
+        {
+            $normalized = learning_normalize_search_text($text);
+            if ($normalized === '') {
+                return [];
+            }
+
+            $parts = explode(' ', $normalized);
+            $terms = [];
+
+            foreach ($parts as $part) {
+                $part = trim($part);
+                if ($part !== '') {
+                    $terms[] = $part;
+                }
+            }
+
+            return array_values(array_unique($terms));
+        }
+    }
+
+    if (!function_exists('learning_score_search_match')) {
+        function learning_score_search_match(string $query, string $label, string $context = '', int $weight = 1): int
+        {
+            // Le score combine : correspondance exacte, début de mot, présence partielle
+            // et proximité orthographique pour tolérer les fautes de frappe.
+            $normalizedQuery = learning_normalize_search_text($query);
+            $normalizedLabel = learning_normalize_search_text($label);
+            $normalizedContext = learning_normalize_search_text($context);
+
+            if ($normalizedQuery === '' || $normalizedLabel === '') {
+                return 0;
+            }
+
+            $score = 0;
+            $terms = learning_extract_search_terms($normalizedQuery);
+            $labelWords = learning_extract_search_terms($normalizedLabel);
+            $contextWords = learning_extract_search_terms($normalizedContext);
+            $allWords = array_values(array_unique(array_merge($labelWords, $contextWords)));
+
+            if ($normalizedLabel === $normalizedQuery) {
+                $score += 240;
+            } elseif (strpos($normalizedLabel, $normalizedQuery) === 0) {
+                $score += 170;
+            } elseif (strpos($normalizedLabel, $normalizedQuery) !== false) {
+                $score += 130;
+            } elseif ($normalizedContext !== '' && strpos($normalizedContext, $normalizedQuery) !== false) {
+                $score += 70;
+            }
+
+            foreach ($terms as $term) {
+                if ($term === '') {
+                    continue;
+                }
+
+                $bestWordScore = 0;
+                foreach ($allWords as $word) {
+                    if ($word === '') {
+                        continue;
+                    }
+
+                    if ($word === $term) {
+                        $bestWordScore = max($bestWordScore, 45);
+                        continue;
+                    }
+
+                    if (strpos($word, $term) === 0) {
+                        $bestWordScore = max($bestWordScore, 36);
+                        continue;
+                    }
+
+                    if (strpos($word, $term) !== false || strpos($term, $word) !== false) {
+                        $bestWordScore = max($bestWordScore, 26);
+                    }
+
+                    $distance = levenshtein($term, $word);
+                    $maxLength = max(strlen($term), strlen($word));
+
+                    if ($maxLength > 0) {
+                        $ratio = 1 - ($distance / $maxLength);
+
+                        if ($ratio >= 0.82) {
+                            $bestWordScore = max($bestWordScore, 30);
+                        } elseif ($ratio >= 0.68) {
+                            $bestWordScore = max($bestWordScore, 18);
+                        }
+                    }
+                }
+
+                $score += $bestWordScore;
+            }
+
+            similar_text($normalizedQuery, $normalizedLabel, $similarityPercent);
+            $score += (int) round($similarityPercent / 2.5);
+
+            return $score * max(1, $weight);
+        }
+    }
+
     if (!function_exists('learning_generate_course_slug')) {
         function learning_generate_course_slug(PDO $bdd, string $title, int $excludeId = 0): string
         {
@@ -484,6 +599,156 @@
                 'sections' => $sections,
                 'final_items' => $finalItems
             ];
+        }
+    }
+
+    if (!function_exists('learning_search_catalog')) {
+        function learning_search_catalog(PDO $bdd, string $query, bool $publishedOnly = false, int $limit = 8): array
+        {
+            // On regroupe les cours et les contenus afin de pouvoir rediriger
+            // soit vers la fiche du cours, soit directement vers une leçon ciblée.
+            $query = trim($query);
+            if ($query === '') {
+                return [];
+            }
+
+            $params = [];
+            $courseSql = "
+                SELECT
+                    c.id,
+                    c.slug,
+                    c.title,
+                    c.short_description,
+                    c.description,
+                    c.is_published
+                FROM learning_courses c
+            ";
+
+            if ($publishedOnly) {
+                $courseSql .= " WHERE c.is_published = 1";
+            }
+
+            $courseSql .= " ORDER BY c.position ASC, c.id ASC";
+
+            $courseStmt = $bdd->prepare($courseSql);
+            $courseStmt->execute($params);
+            $courses = $courseStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $itemSql = "
+                SELECT
+                    i.id,
+                    i.course_id,
+                    i.item_type,
+                    i.title,
+                    i.description,
+                    i.is_preview,
+                    c.slug AS course_slug,
+                    c.title AS course_title,
+                    c.is_published,
+                    s.title AS section_title
+                FROM learning_items i
+                INNER JOIN learning_courses c ON c.id = i.course_id
+                LEFT JOIN learning_sections s ON s.id = i.section_id
+            ";
+
+            if ($publishedOnly) {
+                $itemSql .= " WHERE c.is_published = 1";
+            }
+
+            $itemSql .= " ORDER BY i.position ASC, i.id ASC";
+
+            $itemStmt = $bdd->prepare($itemSql);
+            $itemStmt->execute($params);
+            $items = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $results = [];
+
+            foreach ($courses as $course) {
+                $score = learning_score_search_match(
+                    $query,
+                    (string) ($course['title'] ?? ''),
+                    trim(((string) ($course['short_description'] ?? '')) . ' ' . ((string) ($course['description'] ?? ''))),
+                    3
+                );
+
+                if ($score <= 0) {
+                    continue;
+                }
+
+                $results[] = [
+                    'score' => $score,
+                    'type' => 'course',
+                    'title' => (string) $course['title'],
+                    'subtitle' => (string) ($course['short_description'] ?: 'Ouvrir le cours.'),
+                    'url' => '/details-cours?course=' . urlencode((string) $course['slug']),
+                    'course_slug' => (string) $course['slug']
+                ];
+            }
+
+            foreach ($items as $item) {
+                $score = learning_score_search_match(
+                    $query,
+                    (string) ($item['title'] ?? ''),
+                    trim(
+                        ((string) ($item['description'] ?? '')) . ' ' .
+                        ((string) ($item['course_title'] ?? '')) . ' ' .
+                        ((string) ($item['section_title'] ?? ''))
+                    ),
+                    2
+                );
+
+                if ($score <= 0) {
+                    continue;
+                }
+
+                $itemTypeLabel = (string) ($item['item_type'] ?? 'video') === 'quiz' ? 'Quiz' : 'Leçon';
+                $sectionTitle = trim((string) ($item['section_title'] ?? ''));
+                $subtitleParts = [
+                    'Cours : ' . (string) $item['course_title']
+                ];
+
+                if ($sectionTitle !== '') {
+                    $subtitleParts[] = 'Chapitre : ' . $sectionTitle;
+                }
+
+                $subtitleParts[] = $itemTypeLabel;
+
+                $results[] = [
+                    'score' => $score,
+                    'type' => 'item',
+                    'title' => (string) $item['title'],
+                    'subtitle' => implode(' · ', $subtitleParts),
+                    'url' => '/details-cours?course=' . urlencode((string) $item['course_slug']) . '&item=' . (int) $item['id'],
+                    'course_slug' => (string) $item['course_slug']
+                ];
+            }
+
+            usort($results, static function (array $left, array $right): int {
+                if ($left['score'] === $right['score']) {
+                    return strcmp($left['title'], $right['title']);
+                }
+
+                return $right['score'] <=> $left['score'];
+            });
+
+            $uniqueResults = [];
+            $seenUrls = [];
+
+            foreach ($results as $result) {
+                if (isset($seenUrls[$result['url']])) {
+                    continue;
+                }
+
+                $seenUrls[$result['url']] = true;
+                unset($result['score']);
+                $uniqueResults[] = $result;
+
+                if (count($uniqueResults) >= $limit) {
+                    break;
+                }
+            }
+
+            return $uniqueResults;
         }
     }
 
