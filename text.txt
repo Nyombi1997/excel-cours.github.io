@@ -1,0 +1,4 @@
+Voici ton accès admin
+
+email : admin@admin.com
+password : admin@1234

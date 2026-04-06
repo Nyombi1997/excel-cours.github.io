@@ -154,6 +154,78 @@
     {
         width: 90%;
     }
+    /* e-learning */
+    .learning-admin-page,
+    .learning-student-page
+    {
+        padding: 14px;
+    }
+    .learning-admin-hero,
+    .learning-student-hero
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+    }
+    .learning-admin-hero h1,
+    .learning-student-hero h1
+    {
+        font-size: 25px;
+    }
+    .learning-admin-layout,
+    .learning-course-layout
+    {
+        grid-template-columns: 1fr;
+    }
+    .learning-course-sidebar
+    {
+        position: static;
+        top: auto;
+    }
+    .learning-grid.two,
+    .learning-student-hero__meta
+    {
+        grid-template-columns: 1fr;
+    }
+    .learning-course-card,
+    .learning-item-card,
+    .learning-section-head,
+    .learning-item-panel__head,
+    .learning-quiz-head,
+    .learning-question-builder__head
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .learning-answer-builder
+    {
+        grid-template-columns: 1fr;
+    }
+    .learning-course-card__status
+    {
+        align-self: flex-start;
+    }
+    .learning-modal-card
+    {
+        width: 94vw;
+        padding: 16px;
+    }
+    .learning-panel-header
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .learning-admin-hero-actions,
+    .learning-panel-header-actions,
+    .learning-form-actions,
+    .learning-section-toolbar
+    {
+        width: 100%;
+    }
+    .learning-admin-btn
+    {
+        width: 100%;
+    }
     /* footer */
     .footer
     {

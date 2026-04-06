@@ -16,6 +16,9 @@
                             "compte" => ["controller" => 'Home', "method" => 'showAccount'],
                             "admin" => ["controller" => 'Home', "method" => 'showAdmin'],
                             "gestion-cours" => ["controller" => 'Home', "method" => 'showGestionCours'],
+                            "creation-cours" => ["controller" => 'Home', "method" => 'showCreateCourse'],
+                            "edition-cours" => ["controller" => 'Home', "method" => 'showEditCourse'],
+                            "gestion-chapitre" => ["controller" => 'Home', "method" => 'showManageSection'],
                             "gestion-utilisateurs" => ["controller" => 'Home', "method" => 'showGestionUsers'],
 
                             "contact" => ["controller" => 'Home', "method" => 'showContact'],

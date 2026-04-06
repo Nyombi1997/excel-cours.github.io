@@ -1,0 +1,20 @@
+suis ma logique de programmation
+Ne modifie pas model/bdd.php
+utilise correctement les sessions que tu trouveras dans fonctions/
+Utilise mon design css dans asset/css comme design de base
+en cas de js met les dans asset/js
+mon routeur est dans classes/Routeur.php
+mes méthodes sont dans controller/Home.php
+pour la création des fonctions c'est dans fonctions/
+pour les views c'est dans view/
+pour charger les images c'est à asset/images/
+pour charger les fichiers c'est à asset/fichier/
+pour charger les videos c'est à asset/videos/
+Utilise comment je communique avec sql et ne suppose aucune table ou colonne, si tu pense qu'il faut ajouter une table ou colonne, supprimer une table ou une colonne, ou faire tout autre modification, fait le moi savoir dans le fichier readme
+Utilise le sweatalert si besoin, c'est installer dans mon projet
+Utilise jQuery pour les envoies des requêtes
+Commente les parties importante pour m'aider à troubleshooter
+mes les accent et la ponctuation française quand tu mets des textes
+Tout le design toi être fait en responsive design
+Je suis en modèle MVC
+dans le readme si tu veux que je fasse des actions dans ma base sql écrit moi du code que je peux directement coller dans phpmyadmin
