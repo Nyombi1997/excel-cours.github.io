@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><?= $title_page ?></title>
         <meta name="description" content="AbsoluHub, plateforme tech premium pour apprendre, structurer et faire grandir vos comp&eacute;tences digitales avec clart&eacute;." />
-        <link rel="icon" type="image/png" href="<?= ASSET ?>images/icons/favicon-1.png">
+        <link rel="icon" type="image/png" href="<?= ASSET ?>images/icons/favicon-1.png?<?= filemtime(ROOT . "asset/images/icons/favicon-1.png") ?>">
         <link rel="stylesheet" href="<?= ASSET ?>css/fontawesome/css/all.min.css?<?= filemtime(ROOT . "asset/css/fontawesome/css/all.min.css") ?>">
         <link rel="stylesheet" href="<?= ASSET ?>css/sweetalert2.min.css?<?= filemtime(ROOT . "asset/css/sweetalert2.min.css") ?>">
         <link rel="stylesheet" href="<?= ASSET ?>css/cropper.min.css?<?= filemtime(ROOT . "asset/css/cropper.min.css") ?>">
