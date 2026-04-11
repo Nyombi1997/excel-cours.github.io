@@ -13,7 +13,7 @@
 
     $can_edit_profile = profile_can_edit_user($user);
     $profile_image = profile_get_avatar_url($user);
-    $member_since = !empty($user['date_ajout']) ? date_fr_short($user['date_ajout']) : 'Non renseignÃ©e';
+    $member_since = !empty($user['date_ajout']) ? date_fr_short($user['date_ajout']) : 'Non renseignée';
 
     $startedCourses = [];
     if (!empty($user['unique_id'])) {
@@ -37,12 +37,12 @@
             <span class="profile-sidebar-kicker">Espace compte</span>
             <h2 class="profile-sidebar-title">Mon profil</h2>
             <p class="profile-sidebar-text">
-                Retrouvez votre profil et la progression de vos cours dÃ©jÃ  commencÃ©s.
+                Retrouvez votre profil et la progression de vos cours déjà commencés.
             </p>
         </div>
 
         <div class="card profile-sidebar-card">
-            <span style="font-weight: bold;">Cours commencÃ©s</span>
+            <span style="font-weight: bold;">Cours commencés</span>
             <?php if (!empty($startedCourses)) { ?>
                 <div class="profile-course-progress-list">
                     <?php foreach ($startedCourses as $course) { ?>
@@ -57,19 +57,19 @@
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: <?= (int) $courseProgress['progress_percent'] ?>%;"></div>
                             </div>
-                            <small><?= (int) $courseProgress['completed_items'] ?> Ã©tape(s) validÃ©e(s) sur <?= (int) $courseProgress['total_items'] ?></small>
+                            <small><?= (int) $courseProgress['completed_items'] ?> étape(s) validée(s) sur <?= (int) $courseProgress['total_items'] ?></small>
                         </a>
                     <?php } ?>
                 </div>
             <?php } else { ?>
                 <div class="profile-empty-box">
-                    Aucun cours commencÃ© pour le moment.
+                    Aucun cours commencé pour le moment.
                 </div>
             <?php } ?>
         </div>
 
         <div class="card profile-sidebar-card">
-            <span style="font-weight: bold;">RÃ©sumÃ©</span>
+            <span style="font-weight: bold;">Résumé</span>
             <div class="profile-sidebar-list">
                 <div class="profile-sidebar-item">
                     <span>Membre depuis</span>
@@ -104,7 +104,7 @@
                     <span class="profile-inline-badge"><?= $can_edit_profile ? 'Mon compte' : 'Profil visible' ?></span>
                     <h1 class="profile-intro-title"><?= htmlspecialchars($user['user_name']) ?></h1>
                     <p class="profile-intro-text">
-                        Une page claire pour consulter votre profil et reprendre vos formations lÃ  oÃ¹ vous vous Ãªtes arrÃªtÃ©.
+                        Une page claire pour consulter votre profil et reprendre vos formations là où vous vous êtes arrêté.
                     </p>
 
                     <div class="profile-summary-grid">

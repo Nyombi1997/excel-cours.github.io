@@ -80,7 +80,7 @@
 
     <section class="learning-back-row">
         <div class="learning-back-row__actions">
-            <a href="/cours" class="learning-admin-btn secondary">Retour aux cartes des cours</a>
+            <a href="/cours" class="learning-admin-btn secondary">Retour aux cours</a>
             <button type="button" class="learning-admin-btn secondary learning-program-toggle" id="js_open_program_menu">
                 Voir le programme
             </button>

@@ -373,8 +373,9 @@
         border-radius: 0 20px 20px 0;
         transform: translateX(-105%);
         transition: transform .25s ease;
-        overflow: auto;
+        overflow-y: auto;
         background: #ffffff;
+        padding-top: 0;
     }
     .learning-course-sidebar.active
     {
@@ -401,11 +402,19 @@
     }
     .learning-program-mobile-head
     {
+        position: sticky;
+        top: 0;
+        z-index: 3;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        margin-bottom: 16px;
+        margin: 0 -18px 16px;
+        padding: 16px 18px;
+        background: rgba(255, 255, 255, 0.96);
+        border-bottom: 1px solid rgba(5, 53, 115, 0.10);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
     }
     .learning-grid.two,
     .learning-student-hero__meta
@@ -517,4 +526,65 @@
     {
         cursor: initial;
     }
+}
+
+@media (max-width: 1100px) {
+    .hero-absoluhub,
+    .auth-page-grid { grid-template-columns: 1fr; }
+    .hero-absoluhub__content { padding: 24px; }
+    .hero-absoluhub__visual { padding: 0 24px 24px; }
+    .hero-absoluhub__stats { grid-template-columns: 1fr; }
+    .contact_rubriques_footer,
+    .div_souscription_rubriques_footer,
+    .div_lien_pages_rubriques_footer { width: 100%; }
+}
+
+@media (max-width: 768px) {
+    body { padding-top: 84px; }
+    .site-header { padding: 12px 14px; }
+    .site-header__inner { gap: 10px; }
+    .logo img { height: 36px; width: auto; }
+    .site-header__status { display: none; }
+    body.mobile-menu-open { overflow: hidden; }
+    nav { position: fixed; top: 0; right: -105%; bottom: 0; width: min(86vw, 340px); height: 100vh; padding: 0 14px 14px; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-left: 1px solid rgba(5, 53, 115, 0.10); box-shadow: -20px 0 40px rgba(5, 53, 115, 0.12); transition: right .28s ease; }
+    nav.active { right: 0; width: min(86vw, 340px); z-index: 101; }
+    .site-nav__mobile-head { position: sticky; top: 0; z-index: 3; display: flex; justify-content: space-between; align-items: center; padding: 16px 2px 14px; color: var(--color-primary-dark); font-weight: 700; width: 100%; background: rgba(255, 255, 255, 0.98); border-bottom: 1px solid rgba(5, 53, 115, 0.08); }
+    nav ul { display: flex; flex-direction: column; align-items: stretch; padding: 14px 0 0; gap: 8px; overflow-y: auto; }
+    nav ul li { margin: 0; border: none; padding: 0; width: 100%; }
+    nav ul li a { width: 100%; justify-content: flex-start; min-height: 50px; border-radius: 16px; background: #f8fbff; }
+    .site-nav-overlay.active { display: block; position: fixed; inset: 0; background: rgba(4, 18, 41, 0.42); z-index: 100; }
+    .div_start_btn_mobile { display: inline-flex; align-items: center; gap: 8px; }
+    .start_btn_mobile { display: inline-flex; min-height: 42px; border: 1px solid rgba(5, 53, 115, 0.12); color: var(--color-primary-dark); background: rgba(255, 255, 255, 0.94); font-weight: 700; }
+    .start_btn_mobile.view { margin-left: 0; border-radius: 14px; }
+    .hero-absoluhub { padding: 16px 14px 28px; min-height: auto; }
+    .hero-absoluhub__bg { inset: 0; border-radius: 28px; }
+    .hero-absoluhub h1 { font-size: clamp(2.2rem, 10vw, 3rem); max-width: none; }
+    .hero-device-card__courses { grid-template-columns: 1fr; }
+    .hero-absoluhub__content { padding: 24px 18px 34px; }
+    .home-course-preview,
+    .auth-page-shell,
+    .contact-page-shell,
+    .message-page-shell,
+    .learning-student-page,
+    .learning-admin-page,
+    .container_profile_cours_excel { padding-left: 14px; padding-right: 14px; }
+    .home-course-preview__head { flex-direction: column; align-items: flex-start; }
+    .home-course-preview__cta { width: 100%; }
+    .brand-story-card,
+    .auth-brand-panel,
+    .parent_container_connexion .container.auth-card,
+    .parent_container_connexion .container { padding: 20px; border-radius: 24px; }
+    .auth-brand-panel h1 { max-width: none; font-size: 2.1rem; }
+    .admin-user-form__grid,
+    .admin-user-password-row { grid-template-columns: 1fr; }
+    .admin-user-field--full { grid-column: span 1; }
+    .admin-user-list-card,
+    .admin-user-create-card { padding: 18px; }
+    .admin-user-list-card .div_barre_recherche { left: 18px; right: 18px; top: 18px; }
+    .admin-user-list-card__body { padding-top: 72px; }
+    .footer { padding: 82px 14px 20px; border-radius: 28px 28px 0 0; margin-top: 90px; }
+    .div_logo_footer { top: -58px; }
+    .div_img_logo_footer { width: 126px; height: 126px; }
+    .div_logo_footer img { height: 82px; }
+    .input_rubriques_footer form { grid-template-columns: 1fr; }
 }

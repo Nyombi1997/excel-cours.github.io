@@ -1,26 +1,26 @@
 # Module e-learning dynamique
 
-Cette mise à jour transforme la zone `gestion-cours` en constructeur de parcours de formation avec :
+Cette mise Ã  jour transforme la zone `gestion-cours` en constructeur de parcours de formation avec :
 
 - plusieurs cours ;
 - chapitres ;
-- leçons vidéo ;
+- leÃ§ons vidÃ©o ;
 - quiz de chapitre ;
 - quiz final facultatif ;
 - classement par ordre ;
-- réorganisation en drag & drop ;
+- rÃ©organisation en drag & drop ;
 - certificat facultatif en fin de cours.
 
 ## Important
 
-Je n'ai pas modifié `model/bdd.php`, comme demandé.
+Je n'ai pas modifiÃ© `model/bdd.php`, comme demandÃƒÂ©.
 
-La structure SQL jointe `u577654037_e_construct.sql` ne contient pas les tables du module de cours utilisé par ce projet. Elle décrit une autre base avec `infos`, `messages`, `services`, etc.  
-Pour rendre l'espace cours réellement dynamique avec la logique demandée, j'ai donc ajouté un schéma e-learning dédié dans le code.
+La structure SQL jointe `u577654037_e_construct.sql` ne contient pas les tables du module de cours utilisÃ© par ce projet. Elle dÃ©crit une autre base avec `infos`, `messages`, `services`, etc.  
+Pour rendre l'espace cours rÃ©ellement dynamique avec la logique demandÃƒÂ©e, j'ai donc ajoutÃƒÂ© un schÃ©ma e-learning dÃƒÂ©diÃƒÂ© dans le code.
 
-## Nouvelles tables utilisées
+## Nouvelles tables utilisÃ©es
 
-Le code crée automatiquement les tables suivantes si elles n'existent pas :
+Le code crÃ©e automatiquement les tables suivantes si elles n'existent pas :
 
 - `learning_courses`
 - `learning_sections`
@@ -30,9 +30,9 @@ Le code crée automatiquement les tables suivantes si elles n'existent pas :
 - `learning_user_progress`
 - `learning_quiz_attempt_answers`
 
-## SQL prêt à coller dans phpMyAdmin
+## SQL prÃªt Ã  coller dans phpMyAdmin
 
-Si tu préfères créer les tables toi-même dans phpMyAdmin, colle directement ce script :
+Si tu prÃ©fÃ¨res crÃ©er les tables toi-mÃªme dans phpMyAdmin, colle directement ce script :
 
 ```sql
 CREATE TABLE IF NOT EXISTS `learning_courses` (
@@ -134,9 +134,9 @@ CREATE TABLE IF NOT EXISTS `learning_quiz_attempt_answers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ```
 
-## SQL si les tables existent déjà mais qu'il manque des colonnes
+## SQL si les tables existent dÃ©jÃ  mais qu'il manque des colonnes
 
-Si tu as déjà commencé à tester et que certaines tables existent partiellement, tu peux aussi exécuter :
+Si tu as dÃ©jÃ  commencÃ© Ã  tester et que certaines tables existent partiellement, tu peux aussi exÃ©cuter :
 
 ```sql
 ALTER TABLE `learning_courses`
@@ -276,46 +276,46 @@ ALTER TABLE `learning_quiz_attempt_answers`
 - `answer_id`
 - `date_ajout`
 
-## Notes de compatibilité
+## Notes de compatibilitÃ©
 
-- L'ancienne table `cours` n'a pas été supprimée.
-- La page `cours` garde un affichage de secours basé sur `cours` si aucun enregistrement n'existe encore dans `learning_courses`.
-- Le classement visible côté élève suit l'ordre défini dans l'admin.
+- L'ancienne table `cours` n'a pas Ã©tÃ© supprimée.
+- La page `cours` garde un affichage de secours basÃ© sur `cours` si aucun enregistrement n'existe encore dans `learning_courses`.
+- Le classement visible cÃ´tÃ© Ã©lÃ¨ve suit l'ordre dÃ©fini dans l'admin.
 
-## À vérifier sur ton hébergement
+## Ã€ vÃ©rifier sur ton hÃƒÂ©bergement
 
-- extension PDO MySQL activée ;
-- droits d'écriture sur :
+- extension PDO MySQL activÃ©e ;
+- droits d'Ã©criture sur :
   - `asset/videos/`
   - `asset/fichier/`
-- taille maximale d'upload PHP suffisante pour les vidéos :
+- taille maximale d'upload PHP suffisante pour les vidÃƒÂ©os :
   - `upload_max_filesize`
   - `post_max_size`
   - `max_execution_time`
 
 ## Remarque importante
 
-Je n'ai volontairement supprimé aucune table ni colonne existante de ton projet.  
-Si tu veux plus tard fusionner complètement l'ancienne table `cours` avec ce nouveau modèle, on pourra faire une migration propre plutôt qu'un remplacement brutal.
+Je n'ai volontairement supprimÃƒÂ© aucune table ni colonne existante de ton projet.  
+Si tu veux plus tard fusionner complÃƒÂ¨tement l'ancienne table `cours` avec ce nouveau modÃƒÂ¨le, on pourra faire une migration propre plutÃ´t qu'un remplacement brutal.
 
 ## Recherche des cours
 
-Aucune modification SQL n'est nécessaire pour la barre de recherche des cours.
+Aucune modification SQL n'est nÃ©cessaire pour la barre de recherche des cours.
 
-Tu n'as rien à coller dans phpMyAdmin pour cette fonctionnalité.
+Tu n'as rien ÃƒÂ  coller dans phpMyAdmin pour cette fonctionnalitÃƒÂ©.
 
 ## Espace profil utilisateur
 
-La nouvelle page `compte` permet maintenant à l'utilisateur de modifier :
+La nouvelle page `compte` permet maintenant Ã  l'utilisateur de modifier :
 
 - son nom d'utilisateur ;
 - son adresse e-mail ;
 - son mot de passe ;
-- sa photo de profil recadrée avant envoi.
+- sa photo de profil recadrÃƒÂ©e avant envoi.
 
 ## Point important sur la base SQL jointe
 
-Le dump SQL joint ne contient pas la table `utilisateur`, alors que ton projet l'utilise déjà pour :
+Le dump SQL joint ne contient pas la table `utilisateur`, alors que ton projet l'utilise dÃ©jÃ  pour :
 
 - `user_name`
 - `email`
@@ -326,7 +326,7 @@ Le dump SQL joint ne contient pas la table `utilisateur`, alors que ton projet l
 - `admin`
 - `date_ajout`
 
-Si cette table existe déjà sur ton hébergement avec ces colonnes, tu n'as rien à faire.
+Si cette table existe dÃ©jÃ  sur ton hÃƒÂ©bergement avec ces colonnes, tu n'as rien ÃƒÂ  faire.
 
 Si elle existe mais qu'il manque certaines colonnes, tu peux coller ceci dans phpMyAdmin :
 
@@ -338,7 +338,7 @@ ALTER TABLE `utilisateur`
   ADD COLUMN `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `slug`;
 ```
 
-Si la table `utilisateur` n'existe pas encore dans ta vraie base, tu peux la créer avec ce script :
+Si la table `utilisateur` n'existe pas encore dans ta vraie base, tu peux la crÃ©er avec ce script :
 
 ```sql
 CREATE TABLE IF NOT EXISTS `utilisateur` (
@@ -357,14 +357,14 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 
 ## Comportement retenu pour le profil
 
-- le `slug` existant est conservé si l'utilisateur change seulement son nom d'utilisateur ;
-- un `slug` est généré uniquement s'il manque encore sur le compte ;
+- le `slug` existant est conservÃƒÂ© si l'utilisateur change seulement son nom d'utilisateur ;
+- un `slug` est gÃ©nÃ©rÃ© uniquement s'il manque encore sur le compte ;
 - l'admin ou un visiteur sur une page profil publique voient la page en lecture seule ;
-- la mise à jour du mot de passe reste optionnelle tant que les trois champs sécurité sont laissés vides.
+- la mise Ã  jour du mot de passe reste optionnelle tant que les trois champs sÃ©curitÃ© sont laissÃƒÂ©s vides.
 - 
 ## Module contact et messagerie
 
-La page `contact` a Ã©tÃ© ajoutÃ©e avec cette logique :
+La page `contact` a Ã©tÃ© ajoutée avec cette logique :
 
 - elle n'est accessible qu'aux utilisateurs connectÃ©s ;
 - elle permet :
@@ -379,7 +379,7 @@ La page `contact` a Ã©tÃ© ajoutÃ©e avec cette logique :
 
 ## Important pour la base SQL du module contact
 
-Le dump SQL joint ne contient pas encore les tables nÃ©cessaires Ã  cette fonctionnalitÃ©.
+Le dump SQL joint ne contient pas encore les tables nÃ©cessaires Ã  cette fonctionnalité.
 
 Je n'ai pas modifiÃ© `model/bdd.php` et je n'ai pas supposÃ© l'existence de tables/colonnes qui n'existent pas encore dans ton dump.  
 Pour que le module fonctionne, il faut donc ajouter ces tables dans ta base.
@@ -418,7 +418,7 @@ CREATE TABLE IF NOT EXISTS `contact_messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ```
 
-## Si les tables existent dÃ©jÃ  partiellement
+## Si les tables existent dÃƒÆ’Ã‚Â©jÃƒÆ’Ã‚Â  partiellement
 
 Tu peux adapter avec ces `ALTER TABLE` si besoin :
 
@@ -457,3 +457,39 @@ Pour chaque message, le code enregistre :
 - l'adresse IP (`provenance_ip`) ;
 - le `user_agent` (`provenance_user_agent`) ;
 - la date d'envoi (`date_ajout`).
+## Action SQL manuelle recommandÃ©e pour les vues historiques
+
+Le gabarit global ne modifie plus la base pendant le rendu d'une page.  
+Si tes anciennes tables `cours` et `utilisateur` n'ont pas encore les colonnes attendues par le projet, colle directement ceci dans phpMyAdmin :
+
+```sql
+ALTER TABLE `cours`
+ADD COLUMN `position` INT NOT NULL DEFAULT 0 AFTER `id`;
+
+ALTER TABLE `utilisateur`
+ADD COLUMN `slug` TEXT NULL AFTER `admin`;
+
+CREATE TABLE IF NOT EXISTS `souscription_news_letter` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `email` TEXT NULL,
+  `date_ajout` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+```
+
+Si une colonne existe dÃƒÆ’Ã‚Â©jÃƒÆ’Ã‚Â , ignore simplement la requÃªte concernÃƒÆ’Ã‚Â©e.
+
+## CrÃƒÆ’Ã‚Â©ation d'utilisateurs depuis l'espace admin
+
+AprÃ¨s vÃ©rification du dump `u577654037_excel(5).sql` du 8 avril 2026, la table `utilisateur` contient dÃƒÆ’Ã‚Â©jÃƒÆ’Ã‚Â  les colonnes nÃ©cessaires pour crÃƒÆ’Ã‚Â©er un utilisateur depuis l'espace admin :
+
+- `profile`
+- `unique_id`
+- `user_name`
+- `email`
+- `mdp`
+- `admin`
+- `slug`
+- `date_ajout`
+
+Aucune requÃªte SQL supplÃ©mentaire n'est nÃƒÆ’Ã‚Â©cessaire pour activer cette fonctionnalité.

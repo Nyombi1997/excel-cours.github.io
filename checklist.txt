@@ -17,4 +17,12 @@ Commente les parties importante pour m'aider à troubleshooter
 mes les accent et la ponctuation française quand tu mets des textes
 Tout le design toi être fait en responsive design
 Je suis en modèle MVC
-dans le readme si tu veux que je fasse des actions dans ma base sql écrit moi du code que je peux directement coller dans phpmyadmin
+dans le readme si tu veux que je fasse des actions dans ma base sql écrit moi du code que je peux directement coller dans phpMyAdmin
+Utilise mon design pour que les nouveaux design semblent pas venir d'ailleurs
+
+IMPORTANT:
+Tous les fichiers texte du projet, y compris README.md, commentaires, fichiers PHP, JS, CSS, JSON et Markdown, doivent être enregistrés en UTF-8.
+N’utilise jamais d’encodage Latin1 ou ISO-8859-1.
+Tous les accents français doivent rester corrects, par exemple : nécessaire, déjà, édition, paramètres.
+Après chaque modification de fichier texte, vérifie qu’aucun texte corrompu du type "nÃ©cessaire", "dÃ©jÃ ", "paramÃ¨tres" n’est présent.
+Si tu détectes du texte corrompu, corrige-le immédiatement.
